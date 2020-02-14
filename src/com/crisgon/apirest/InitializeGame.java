@@ -14,7 +14,7 @@ public class InitializeGame {
 
 	// @Path("newgame")
 	public void newGame(String idSesion) {
-
+		
 	}
 
 	// @Path("reset")
