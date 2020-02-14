@@ -15,13 +15,12 @@ import javax.ws.rs.core.MediaType;
  * @author Cristhian González.
  * 
  *         Clase que contiene los endpoints para crear, leer, actualizar y
- *         eliminar partidas de la base de datos.
+ *         eliminar estadisticas de la base de datos.
  */
 
-@Path("/gamescrud")
-public class GamesCrud {
+@Path("/statisticscrud")
+public class EstadisticasAPI {
 
-	/** Endpoint que crea una partida en la base de datos */
 	@Path("create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -29,7 +28,6 @@ public class GamesCrud {
 
 	}
 
-	/** Endpoint que lee una partida en la base de datos */
 	@Path("read")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +35,6 @@ public class GamesCrud {
 
 	}
 
-	/** Endpoint que actualiza una partida en la base de datos */
 	@Path("update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
@@ -45,11 +42,9 @@ public class GamesCrud {
 
 	}
 
-	/** Endpoint que elimina una partida en la base de datos */
 	@Path("delete")
 	@DELETE
 	public void doDelete() {
 
 	}
-
 }

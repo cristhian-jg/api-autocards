@@ -12,8 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.crisgon.apirest.controller.CartaOperations;
 import com.crisgon.apirest.model.Carta;
-import com.crisgon.apirest.services.CartaService;
 import com.google.gson.Gson;
 
 /**
@@ -25,9 +25,11 @@ import com.google.gson.Gson;
  *         eliminar cartas de la base de datos.
  */
 
-@Path("/cardscrud")
-public class CardsCrud {
+@Path("/cartas")
+public class CartasAPI {
 
+	private static final String TAG = "CartasAPI";
+	
 	/** Endpoint que crea una carta en la base de datos */
 	@Path("create")
 	@POST
@@ -46,13 +48,13 @@ public class CardsCrud {
 		String json;
 
 		try {
-			cartas = new CartaService().getAll();
-
+			
+			cartas = new CartaOperations().getAll();
 			json = new Gson().toJson(cartas);
-
 			return Response.status(Response.Status.OK).entity(json).build();
+		
 		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity("Error: " + e.toString()).build();
+			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Error " + e.toString()).build();
 		}
 	}
 

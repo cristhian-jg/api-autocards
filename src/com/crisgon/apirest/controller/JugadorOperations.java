@@ -1,4 +1,4 @@
-package com.crisgon.apirest.services;
+package com.crisgon.apirest.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import com.crisgon.apirest.model.Jugador;
  * 
  */
 
-public class JugadorService {
+public class JugadorOperations {
 
 	public ArrayList<Jugador> getAll() {
 		Connection connection = MySQLConnector.connectMySQL();

@@ -1,4 +1,4 @@
-package com.crisgon.apirest.services;
+package com.crisgon.apirest.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

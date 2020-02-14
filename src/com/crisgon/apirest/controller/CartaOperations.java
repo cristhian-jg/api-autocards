@@ -1,4 +1,4 @@
-package com.crisgon.apirest.services;
+package com.crisgon.apirest.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import com.crisgon.apirest.model.Carta;
  * 
  */
 
-public class CartaService {
+public class CartaOperations {
 	
 	/** Devuelve todas las cartas de la base de datos */
 	public ArrayList<Carta> getAll() {
