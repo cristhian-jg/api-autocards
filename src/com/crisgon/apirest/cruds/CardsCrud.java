@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import com.crisgon.apirest.model.Carta;
 import com.crisgon.apirest.services.CartaService;
+import com.google.gson.Gson;
 
 /**
  * Created by @cristhian-jg on 13/02/2020
@@ -27,35 +28,46 @@ import com.crisgon.apirest.services.CartaService;
 @Path("/cardscrud")
 public class CardsCrud {
 
-	/** Endpoint que crea una carta en la base de datos*/
+	/** Endpoint que crea una carta en la base de datos */
 	@Path("create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void doCreate() {
-		
+
 	}
-	
+
 	/** Endpoint que lee una carta en la base de datos */
 	@Path("read")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doRead() {
-		
-		return null;
+
+		ArrayList<Carta> cartas;
+		String json;
+
+		try {
+			cartas = new CartaService().getAll();
+
+			json = new Gson().toJson(cartas);
+
+			return Response.status(Response.Status.OK).entity(json).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.SEE_OTHER).entity("Error: " + e.toString()).build();
+		}
 	}
-	
+
 	/** Endpoint que actualiza una carta en la base de datos */
 	@Path("update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public void doUpdate() {
-		
+
 	}
-	
+
 	/** Endpoint que elimina una carta en la base de datos */
 	@Path("delete")
 	@DELETE
 	public void doDelete() {
-		
+
 	}
 }
