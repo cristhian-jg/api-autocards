@@ -67,7 +67,7 @@ public class JugadorOperations {
 		String nombre, password;
 		int ganadas, perdidas, empatadas;
 
-		String query = "SELECT * FROM jugadores WHERE nickname = " + nickname;
+		String query = "SELECT * FROM jugadores WHERE nickname = '" + nickname + "'";
 
 		try {
 
@@ -95,47 +95,65 @@ public class JugadorOperations {
 
 		PreparedStatement preparedStatement;
 
-		String query = "INSERT INTO jugadores VALUES(" + "'" + jugador.getNickname() + "'," + "'" + jugador.getNombre()
-				+ "'," + "'" + jugador.getPassword() + "'," + "0, 0, 0";
+		if (jugador.getNickname() != null) {
+			String query = "INSERT INTO jugadores (nickname, nombre, password, ganadas, perdidas, empatadas) VALUES("
+					+ "'" + jugador.getNickname() + "'," + "'" + jugador.getNombre() + "'," + "'"
+					+ jugador.getPassword() + "'," + "0, 0, 0)";
 
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				preparedStatement = connection.prepareStatement(query);
+				preparedStatement.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 
 	public static void updateJugador(Jugador jugador) {
 
 		PreparedStatement preparedStatement;
 
-		String query = "UPDATE jugadores SET " + "nombre = '" + jugador.getNombre() + "'," + "password = '"
-				+ jugador.getPassword() + "'," + "ganadas = " + jugador.getGanadas() + "," + "perdidas = "
-				+ jugador.getPerdidas() + "," + "empatadas = " + jugador.getEmpatadas();
+		StringBuilder query = new StringBuilder();
 
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (jugador.getNombre() != null || jugador.getPassword() != null) {
+
+			query.append("UPDATE jugadores SET ");
+
+			if (jugador.getNombre() != null) {
+				query.append("nombre = '" + jugador.getNombre() + "'");
+			}
+
+			if (jugador.getPassword() != null) {
+				query.append(", password = '" + jugador.getPassword() + "'");
+			}
+
+			query.append("WHERE nickname = '" + jugador.getNickname() + "'");
+
+			System.out.print(query);
+
+			try {
+				preparedStatement = connection.prepareStatement(query.toString());
+				preparedStatement.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 	}
-	
-	public static void deleteJugador(Jugador jugador) {
-		
+
+	public static void deleteJugador(String nickname) {
+
 		PreparedStatement preparedStatement;
 
-		String query = "DELETE FROM jugadores WHERE nickname = " + jugador.getNickname();
+		String query = "DELETE FROM jugadores WHERE nickname = '" + nickname + "'";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
