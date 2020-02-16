@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MySQLConnector {
 
-	public static Connection connectMySQL() {
+	public static Connection getConnection() {
 
 		Connection connection = null;
 		String usuario = "root";
