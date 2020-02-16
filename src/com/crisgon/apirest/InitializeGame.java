@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -83,25 +84,28 @@ public class InitializeGame {
 		return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Register fail.").build();
 	}
 
-	@Path("newgame")
+	@Path("newgame/{idSession}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response newGame(Jugador jugador) { //Podría ser sustituida por una clase Jugador.
+	public Response newGame(@PathParam("idSession") String idSession) { // Podría ser sustituida por una clase Jugador.
 
 		ArrayList<Partida> partidas;
-
+		Jugador jugador;
+		
 		String nickname;
 		boolean terminada;
 
 		String json = "";
 
 		partidas = PartidasOperations.getAll();
+		jugador = JugadorOperations.getJugador(idSession);
 
 		for (int i = 0; i < partidas.size(); i++) {
-			if (partidas.get(i).getJugador().equals(jugador.getNickname()) 
-					&& partidas.get(i).isTerminada() ) {
-				// Ya no hay partidas en marcha para el usuario y hay que devolver el id de la partida.
+			if (partidas.get(i).getJugador().equals(jugador.getNickname()) && partidas.get(i).isTerminada()) {
+				// Ya no hay partidas en marcha para el usuario y hay que devolver el id de la
+				// partida.
+				json = new Gson().toJson(partidas.get(i).getId());
 				return Response.status(Response.Status.OK).entity(json).build();
 			}
 		}
@@ -110,16 +114,23 @@ public class InitializeGame {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	// Poner la partida pasa como terminada
-	@Path("reset")
+	// Poner la partida como terminada
+	@Path("reset/{idSession}/{idGame}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reset(Partida partida) {
+	public Response reset(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame) {
 
+		Partida partida;
+		String json = "";
 		
+		partida = PartidasOperations.getPartida(idGame);
+		partida.setTerminada(true);
 		
-		return null;
+		PartidasOperations.updatePartida(partida);
+		json = new Gson().toJson(partida);
+		
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	// @Path("raffle")
