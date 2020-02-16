@@ -18,8 +18,8 @@ import com.crisgon.apirest.model.Carta;
 public class CartaOperations {
 	
 	/** Devuelve todas las cartas de la base de datos */
-	public ArrayList<Carta> getAll() {
-		Connection connection = MySQLConnector.connectMySQL();
+	public static ArrayList<Carta> getAll() {
+		Connection connection = MySQLConnector.getConnection();
 		
 		ArrayList<Carta> cartas;
 		
