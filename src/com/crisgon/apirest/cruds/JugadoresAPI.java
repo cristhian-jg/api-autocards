@@ -28,30 +28,22 @@ import com.google.gson.Gson;
  *         eliminar jugadores de la base de datos.
  */
 
-@Path("/playerscrud")
+@Path("/jugadores")
 public class JugadoresAPI {
 
 	private static final String TAG = "JugadoresAPI";
 
 	/** Endpoint que crea un jugador en la base de datos */
-	@Path("create")
+	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doCreate(Jugador jugador) {
-
-		String json;
-
-		JugadorOperations.addJugador(jugador);
-
-		try {
-			jugador = JugadorOperations.getJugador(jugador.getNickname());
-
-			json = new Gson().toJson(jugador);
-
+		if (JugadorOperations.addJugador(jugador)) {
+			String json = new Gson().toJson(jugador);
 			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Creation failed, the user already exists" + e.toString()).build();
+		} else {
+			return Response.status(400).entity("Creation fail.").build();
 		}
 	}
 
@@ -60,19 +52,9 @@ public class JugadoresAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doRead() {
-
-		ArrayList<Jugador> jugadores;
-		String json;
-
-		try {
-			jugadores = JugadorOperations.getAll();
-
-			json = new Gson().toJson(jugadores);
-
-			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Error " + e.toString()).build();
-		}
+		ArrayList<Jugador> jugadores = JugadorOperations.getAll();
+		String json = new Gson().toJson(jugadores);
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	/** Endpoint que actualiza un jugador en la base de datos */
@@ -82,19 +64,17 @@ public class JugadoresAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doUpdate(Jugador jugador, @PathParam("nickname") String nickname) {
 
-		
 		String json;
 
 		try {
 			jugador.setNickname(nickname);
 			JugadorOperations.updateJugador(jugador);
-			
+
 			json = new Gson().toJson(JugadorOperations.getJugador(nickname));
 			return Response.status(Response.Status.OK).entity(json).build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Update failed." + e.toString()).build();
-
 		}
 	}
 
@@ -103,22 +83,11 @@ public class JugadoresAPI {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doDelete(@PathParam("nickname") String nickname) {
-
-		Jugador jugador;
-		String json;
-
-		try {
-			json = new Gson().toJson(JugadorOperations.getJugador(nickname));
-			
-			JugadorOperations.deleteJugador(nickname);
-
+		if (JugadorOperations.deleteJugador(nickname)) {
+			String json = new Gson().toJson(JugadorOperations.getJugador(nickname));
 			return Response.status(Response.Status.OK).entity(json).build();
-
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Deletion failed." + e.toString()).build();
-
-		}
-
+		} else
+			return Response.status(400).entity("Deletion failed.").build();
 	}
-
+	
 }

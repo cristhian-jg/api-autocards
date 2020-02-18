@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.crisgon.apirest.model.Jugador;
@@ -23,7 +24,7 @@ public class JugadorOperations {
 
 		ArrayList<Jugador> jugadores;
 
-		PreparedStatement preparedStatement;
+		Statement statement;
 		ResultSet resultSet;
 		Jugador jugador;
 
@@ -31,9 +32,11 @@ public class JugadorOperations {
 
 		jugadores = new ArrayList<>();
 
+		String query = "SELECT * FROM jugadores";
+		
 		try {
-			preparedStatement = connection.prepareStatement("SELECT * FROM jugadores");
-			resultSet = preparedStatement.executeQuery();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 
 			while (resultSet.next()) {
 
@@ -56,7 +59,7 @@ public class JugadorOperations {
 	public static Jugador getJugador(String nickname) {
 
 		Jugador jugador = null;
-		PreparedStatement preparedStatement;
+		Statement statement;
 		ResultSet resultSet;
 
 		String nombre, password;
@@ -66,8 +69,8 @@ public class JugadorOperations {
 
 		try {
 
-			preparedStatement = connection.prepareStatement(query);
-			resultSet = preparedStatement.executeQuery();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 
 			if (resultSet.next()) {
 				nombre = resultSet.getString("nombre");
@@ -86,27 +89,28 @@ public class JugadorOperations {
 		return jugador;
 	}
 
-	public static void addJugador(Jugador jugador) {
-
-		PreparedStatement preparedStatement;
-
+	public static Boolean addJugador(Jugador jugador) {
+		Boolean validada = false;
 		if (jugador.getNickname() != null) {
 			String query = "INSERT INTO jugadores (nickname, nombre, password) VALUES("
 					+ "'" + jugador.getNickname() + "'," + "'" + jugador.getNombre() + "'," + "'"
 					+ jugador.getPassword() + "')";
-
 			try {
-				preparedStatement = connection.prepareStatement(query);
-				preparedStatement.execute();
+				Statement statement = connection.createStatement();
+				statement.executeQuery(query);
+				validada = true;
 			} catch (SQLException e) {
+				validada = false;
 				e.printStackTrace();
 			}
 		}
+		
+		return validada;
 	}
 
 	public static void updateJugador(Jugador jugador) {
 
-		PreparedStatement preparedStatement;
+		Statement statement;
 
 		StringBuilder query = new StringBuilder();
 
@@ -127,8 +131,8 @@ public class JugadorOperations {
 			System.out.print(query);
 
 			try {
-				preparedStatement = connection.prepareStatement(query.toString());
-				preparedStatement.execute();
+				statement = connection.createStatement();
+				statement.executeQuery(query.toString());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -137,18 +141,19 @@ public class JugadorOperations {
 
 	}
 
-	public static void deleteJugador(String nickname) {
-
-		PreparedStatement preparedStatement;
-
+	public static Boolean deleteJugador(String nickname) {
+		Boolean validado = false;
 		String query = "DELETE FROM jugadores WHERE nickname = '" + nickname + "'";
 		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
+			Statement statement = connection.createStatement();
+			statement.executeQuery(query);
+			validado = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			validado = false;
 		}
 
+		return validado;
 	}
 
 }

@@ -1,9 +1,9 @@
 package com.crisgon.apirest.controller;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.crisgon.apirest.model.Carta;
@@ -23,7 +23,7 @@ public class CartaOperations {
 
 		ArrayList<Carta> cartas;
 
-		PreparedStatement preparedStatement;
+		Statement statement;
 		ResultSet resultSet;
 		Carta carta;
 
@@ -35,8 +35,11 @@ public class CartaOperations {
 		cartas = new ArrayList<>();
 
 		try {
-			preparedStatement = connection.prepareStatement("SELECT * FROM cartas");
-			resultSet = preparedStatement.executeQuery();
+
+			String query = "SELECT * FROM cartas";
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 
 			while (resultSet.next()) {
 
@@ -69,7 +72,7 @@ public class CartaOperations {
 	public static Carta getCarta(String identificador) {
 
 		Carta carta = null;
-		PreparedStatement preparedStatement;
+		Statement statement;
 		ResultSet resultSet;
 
 		String marca, modelo;
@@ -81,8 +84,8 @@ public class CartaOperations {
 
 		try {
 
-			preparedStatement = connection.prepareStatement(query);
-			resultSet = preparedStatement.executeQuery();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 
 			if (resultSet.next()) {
 				marca = resultSet.getString("marca");
@@ -102,42 +105,48 @@ public class CartaOperations {
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
-		
+
 		return carta;
 	}
 
-	public static void addCarta(Carta carta) {
-		
-		PreparedStatement preparedStatement;
-		
+	public static boolean addCarta(Carta carta) {
+
+		Statement statement;
+		boolean validado = false;
+
 		if (carta.getIdentificador() != null) {
 			String query = "INSERT INTO cartas (identificador, marca, modelo, foto, motor,"
-					+ " potencia, velocidad, cilindros, revoluciones, consumo) VALUES ("
-					+ "'"+ carta.getIdentificador() + "', '" + carta.getMarca() + "', '" + carta.getModelo() + "', "
-					+ "null, carta.getMotor(), carta.getPotencia(), carta.getVelocidad(), "
-					+ "carta.getCilindros(), carta.getRevoluciones, carta.getConsumo)";
-			
-			try { 
-				preparedStatement = connection.prepareStatement(query);
-				preparedStatement.execute();
+					+ " potencia, velocidad, cilindros, revoluciones, consumo) VALUES (" + "'"
+					+ carta.getIdentificador() + "', '" + carta.getMarca() + "', '" + carta.getModelo() + "', "
+					+ "null,"+ carta.getMotor()+ "," + carta.getPotencia() + "," + carta.getVelocidad() + ", "
+					+ carta.getCilindros() + "," + carta.getRevoluciones() + "," + carta.getConsumo() + ")";
+			try {
+				statement = connection.createStatement();
+				statement.executeUpdate(query);
+				validado = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				validado = false;
 			}
 		}
-		
-	}
-	
-	public static void deleteCarta(String identificador) {
-		
-		PreparedStatement preparedStatement;
 
+		return validado;
+	}
+
+	public static boolean deleteCarta(String identificador) {
+	
+		Statement statement;
+		boolean validado = false;
 		String query = "DELETE FROM cartas WHERE identificador = '" + identificador + "'";
 		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
+			statement = connection.createStatement();
+			statement.executeQuery(query);
+			validado = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			validado = false;
 		}
-		
+
+		return validado;
 	}
 }

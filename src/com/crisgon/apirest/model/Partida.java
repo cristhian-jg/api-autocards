@@ -21,9 +21,17 @@ public class Partida implements Serializable {
 	public Partida() {
 
 	}
-
+	
 	public Partida(int id, String jugador, boolean ganada, boolean terminada, Date fecha) {
+		super();
 		this.id = id;
+		this.jugador = jugador;
+		this.ganada = ganada;
+		this.terminada = terminada;
+		this.fecha = fecha;
+	}
+
+	public Partida(String jugador, boolean ganada, boolean terminada, Date fecha) {
 		this.jugador = jugador;
 		this.ganada = ganada;
 		this.terminada = terminada;

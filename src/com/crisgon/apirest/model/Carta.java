@@ -12,22 +12,25 @@ import java.util.Arrays;
 
 public class Carta implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private String identificador;
 	private String marca;
 	private String modelo;
 	private byte[] foto;
-	private int motor;
-	private int potencia;
-	private int velocidad;
-	private int cilindros;
-	private int revoluciones;
-	private double consumo;
+	private Integer motor;
+	private Integer potencia;
+	private Integer velocidad;
+	private Integer cilindros;
+	private Integer revoluciones;
+	private Double consumo;
 
 	public Carta() {
 	}
 
-	public Carta(String identificador, String marca, String modelo, byte[] foto, int motor, int potencia, int velocidad,
-			int cilindros, int revoluciones, double consumo) {
+	public Carta(String identificador, String marca, String modelo, byte[] foto, Integer motor, Integer potencia,
+			Integer velocidad, Integer cilindros, Integer revoluciones, Double consumo) {
+		super();
 		this.identificador = identificador;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -72,51 +75,51 @@ public class Carta implements Serializable {
 		this.foto = foto;
 	}
 
-	public int getMotor() {
+	public Integer getMotor() {
 		return motor;
 	}
 
-	public void setMotor(int motor) {
+	public void setMotor(Integer motor) {
 		this.motor = motor;
 	}
 
-	public int getPotencia() {
+	public Integer getPotencia() {
 		return potencia;
 	}
 
-	public void setPotencia(int potencia) {
+	public void setPotencia(Integer potencia) {
 		this.potencia = potencia;
 	}
-	
-	public int getVelocidad() {
+
+	public Integer getVelocidad() {
 		return velocidad;
 	}
 
-	public void setVelocidad(int velocidad) {
+	public void setVelocidad(Integer velocidad) {
 		this.velocidad = velocidad;
 	}
 
-	public int getCilindros() {
+	public Integer getCilindros() {
 		return cilindros;
 	}
 
-	public void setCilindros(int cilindros) {
+	public void setCilindros(Integer cilindros) {
 		this.cilindros = cilindros;
 	}
 
-	public int getRevoluciones() {
+	public Integer getRevoluciones() {
 		return revoluciones;
 	}
 
-	public void setRevoluciones(int revoluciones) {
+	public void setRevoluciones(Integer revoluciones) {
 		this.revoluciones = revoluciones;
 	}
 
-	public double getConsumo() {
+	public Double getConsumo() {
 		return consumo;
 	}
 
-	public void setConsumo(double consumo) {
+	public void setConsumo(Double consumo) {
 		this.consumo = consumo;
 	}
 

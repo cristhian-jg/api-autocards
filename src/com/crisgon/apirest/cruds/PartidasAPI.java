@@ -28,31 +28,23 @@ import com.google.gson.Gson;
  *         eliminar partidas de la base de datos.
  */
 
-@Path("/gamescrud")
+@Path("/partidas")
 public class PartidasAPI {
 
 	private static final String TAG = "PartidasAPI";
-	
+
 	/** Endpoint que crea una partida en la base de datos */
 	@Path("create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doCreate(Partida partida) {
-
-		String json;
-
-		PartidasOperations.addPartida(partida);
-
-		try {
+		if (PartidasOperations.addPartida(partida)) {
 			partida = PartidasOperations.getPartida(partida.getId());
-			json = new Gson().toJson(partida);
+			String json = new Gson().toJson(partida);
 			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER)
-					.entity(TAG + ": Creation failed, the user already exists" + e.toString()).build();
-		}
-
+		} else
+			return Response.status(400).entity("Creation failed, the user already exists").build();
 	}
 
 	/** Endpoint que lee una partida en la base de datos */
@@ -60,20 +52,9 @@ public class PartidasAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doRead() {
-
-		ArrayList<Partida> partidas;
-		String json;
-
-		try {
-			partidas = PartidasOperations.getAll();
-
-			json = new Gson().toJson(partidas);
-
-			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Error " + e.toString()).build();
-		}
-		
+		ArrayList<Partida> partidas = PartidasOperations.getAll();
+		String json = new Gson().toJson(partidas);
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	/** Endpoint que actualiza una partida en la base de datos */
@@ -83,19 +64,17 @@ public class PartidasAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doUpdate(Partida partida, @PathParam("id") int id) {
 
-		
 		String json;
 
 		try {
 			partida.setId(id);
 			PartidasOperations.updatePartida(partida);
-			
+
 			json = new Gson().toJson(PartidasOperations.getPartida(id));
 			return Response.status(Response.Status.OK).entity(json).build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Update failed." + e.toString()).build();
-
 		}
 	}
 
@@ -104,21 +83,11 @@ public class PartidasAPI {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doDelete(@PathParam("id") int id) {
-
-		Partida partida;
-		String json;
-		
-		try {
-			json = new Gson().toJson(PartidasOperations.getPartida(id));
-			
-			PartidasOperations.deletePartida(id);
-
+		if (PartidasOperations.deletePartida(id)) {
+			String json = new Gson().toJson(PartidasOperations.getPartida(id));
 			return Response.status(Response.Status.OK).entity(json).build();
-
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Deletion failed." + e.toString()).build();
-
-		}
+		} else
+			return Response.status(400).entity("Deletion failed.").build();
 	}
 
 }

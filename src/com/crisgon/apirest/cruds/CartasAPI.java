@@ -30,28 +30,18 @@ import com.google.gson.Gson;
 public class CartasAPI {
 
 	private static final String TAG = "CartasAPI";
-	
+
 	/** Endpoint que crea una carta en la base de datos */
 	@Path("create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doCreate(Carta carta) {
-
-		String json;
-		
-		CartaOperations.addCarta(carta);
-		
-		try {
-			carta = CartaOperations.getCarta(carta.getIdentificador());
-			json = new Gson().toJson(carta);
-			
+		if (CartaOperations.addCarta(carta)) {
+			String json = new Gson().toJson(carta);
 			return Response.status(Response.Status.OK).entity(json).build();
-			
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Creation failed, the user already exists" + e.toString()).build();
-		}
-		
+		} else
+			return Response.status(400).entity("Creation failed, the user already exists").build();
 	}
 
 	/** Endpoint que lee una carta en la base de datos */
@@ -59,18 +49,9 @@ public class CartasAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doRead() {
-
-		ArrayList<Carta> cartas;
-		String json;
-
-		try {
-			
-			cartas = CartaOperations.getAll();
-			json = new Gson().toJson(cartas);
-			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Error " + e.toString()).build();
-		}
+		ArrayList<Carta> cartas = CartaOperations.getAll();
+		String json = new Gson().toJson(cartas);
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	/** Endpoint que actualiza una carta en la base de datos */
@@ -78,7 +59,6 @@ public class CartasAPI {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public void doUpdate() {
-
 	}
 
 	/** Endpoint que elimina una carta en la base de datos */
@@ -86,18 +66,10 @@ public class CartasAPI {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doDelete(@PathParam("identificador") String identificador) {
-
-		Carta carta;
-		String json;
-		
-		try {
-			json = new Gson().toJson(CartaOperations.getCarta(identificador));
-			
-			CartaOperations.deleteCarta(identificador);
-			
+		String json = new Gson().toJson(CartaOperations.getCarta(identificador));
+		if (CartaOperations.deleteCarta(identificador)) {
 			return Response.status(Response.Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Deletion failed." + e.toString()).build();
-		}
+		} else
+			return Response.status(400).entity(TAG + ": Deletion failed.").build();
 	}
 }

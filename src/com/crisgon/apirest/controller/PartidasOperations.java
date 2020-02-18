@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.crisgon.apirest.model.Jugador;
@@ -18,7 +19,7 @@ public class PartidasOperations {
 
 		ArrayList<Partida> partidas;
 
-		PreparedStatement preparedStatement;
+		Statement statement;
 		ResultSet resultSet;
 		Partida partida;
 
@@ -31,8 +32,10 @@ public class PartidasOperations {
 
 		try {
 
-			preparedStatement = connection.prepareStatement("SELECT * FROM partidas");
-			resultSet = preparedStatement.executeQuery();
+			String query = "SELECT * FROM partidas";
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 
 			while (resultSet.next()) {
 
@@ -89,70 +92,61 @@ public class PartidasOperations {
 
 	}
 
-	public static void addPartida(Partida partida) {
-
-		PreparedStatement preparedStatement;
-
+	public static boolean addPartida(Partida partida) {
+		boolean validado = false;
 		if (partida.getId() != 0) {
-			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + partida.getId()
-					+ ", '" + partida.getJugador() + "', " + partida.isGanada() + ", " + partida.isTerminada() + ", '"
-					+ partida.getFecha() + "'";
+			String query = "INSERT INTO partidas (jugador, ganada, terminada, fecha) VALUES('" + partida.getJugador()
+					+ "', " + partida.isGanada() + ", " + partida.isTerminada() + ", '" + partida.getFecha() + "'";
 			try {
-				preparedStatement = connection.prepareStatement(query);
-				preparedStatement.execute();
+				Statement statement = connection.createStatement();
+				statement.executeUpdate(query);
+				validado = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				validado = false;
 			}
 		}
-
+		return validado;
 	}
 
-	public static void updatePartida(Partida partida) {
+	public static boolean updatePartida(Partida partida) {
 
-		PreparedStatement preparedStatement;
-
+		Statement statement;
 		StringBuilder query = new StringBuilder();
+		boolean validado = false;
 
 		if (partida.getJugador() != null || partida.getFecha() != null) {
-
 			query.append("UPDATE partidas SET ");
-
-			if (partida.getJugador() != null) {
+			if (partida.getJugador() != null)
 				query.append("jugador = '" + partida.getJugador() + "'");
-			}
-			
 			query.append(", terminada = " + partida.isTerminada());
-			
-			if (partida.getFecha() != null) {
+			if (partida.getFecha() != null)
 				query.append(", fecha = '" + partida.getFecha() + "'");
-			}
-
 			query.append("WHERE id = '" + partida.getId() + "'");
-
-			System.out.print(query);
-
 			try {
-				preparedStatement = connection.prepareStatement(query.toString());
-				preparedStatement.execute();
+				statement = connection.createStatement();
+				statement.executeUpdate(query.toString());
+				validado = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				validado = false;
 			}
-
 		}
+		return validado;
 	}
 
-	public static void deletePartida(int id) {
-
-		PreparedStatement preparedStatement;
-
+	public static boolean deletePartida(int id) {
+		boolean validado = false;
 		String query = "DELETE FROM partidas WHERE id = " + id;
 		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
+			Statement statement = connection.prepareStatement(query);
+			statement.executeUpdate(query);
+			validado = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			validado = false;
 		}
-
+		return validado;
 	}
 
 }
