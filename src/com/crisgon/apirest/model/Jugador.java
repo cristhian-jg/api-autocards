@@ -14,20 +14,14 @@ public class Jugador implements Serializable {
 	private String nickname;
 	private String nombre;
 	private String password;
-	private int ganadas;
-	private int perdidas;
-	private int empatadas;
 
 	public Jugador() {
 	}
 
-	public Jugador(String nickname, String nombre, String password, int ganadas, int perdidas, int empatadas) {
+	public Jugador(String nickname, String nombre, String password) {
 		this.nickname = nickname;
 		this.nombre = nombre;
 		this.password = password;
-		this.ganadas = ganadas;
-		this.perdidas = perdidas;
-		this.empatadas = empatadas;
 	}
 
 	public String getNickname() {
@@ -54,34 +48,9 @@ public class Jugador implements Serializable {
 		this.password = password;
 	}
 
-	public int getGanadas() {
-		return ganadas;
-	}
-
-	public void setGanadas(int ganadas) {
-		this.ganadas = ganadas;
-	}
-
-	public int getPerdidas() {
-		return perdidas;
-	}
-
-	public void setPerdidas(int perdidas) {
-		this.perdidas = perdidas;
-	}
-
-	public int getEmpatadas() {
-		return empatadas;
-	}
-
-	public void setEmpatadas(int empatadas) {
-		this.empatadas = empatadas;
-	}
-
 	@Override
 	public String toString() {
-		return "Jugador [nickname=" + nickname + ", nombre=" + nombre + ", password=" + password + ", ganadas="
-				+ ganadas + ", perdidas=" + perdidas + ", empatadas=" + empatadas + "]";
+		return "Jugador [nickname=" + nickname + ", nombre=" + nombre + ", password=" + password + "]";
 	}
 	
 	
