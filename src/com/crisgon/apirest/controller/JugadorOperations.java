@@ -28,7 +28,6 @@ public class JugadorOperations {
 		Jugador jugador;
 
 		String nickname, nombre, password;
-		int ganadas, perdidas, empatadas;
 
 		jugadores = new ArrayList<>();
 
@@ -41,12 +40,8 @@ public class JugadorOperations {
 				nickname = resultSet.getString("nickname");
 				nombre = resultSet.getString("nombre");
 				password = resultSet.getString("password");
-
-				ganadas = resultSet.getInt("ganadas");
-				perdidas = resultSet.getInt("perdidas");
-				empatadas = resultSet.getInt("empatadas");
-
-				jugador = new Jugador(nickname, nombre, password, ganadas, perdidas, empatadas);
+				
+				jugador = new Jugador(nickname, nombre, password);
 
 				jugadores.add(jugador);
 			}
@@ -81,7 +76,7 @@ public class JugadorOperations {
 				perdidas = resultSet.getInt("perdidas");
 				empatadas = resultSet.getInt("empatadas");
 
-				jugador = new Jugador(nickname, nombre, password, ganadas, perdidas, empatadas);
+				jugador = new Jugador(nickname, nombre, password);
 			}
 
 		} catch (SQLException e) {
@@ -96,9 +91,9 @@ public class JugadorOperations {
 		PreparedStatement preparedStatement;
 
 		if (jugador.getNickname() != null) {
-			String query = "INSERT INTO jugadores (nickname, nombre, password, ganadas, perdidas, empatadas) VALUES("
+			String query = "INSERT INTO jugadores (nickname, nombre, password) VALUES("
 					+ "'" + jugador.getNickname() + "'," + "'" + jugador.getNombre() + "'," + "'"
-					+ jugador.getPassword() + "'," + "0, 0, 0)";
+					+ jugador.getPassword() + "')";
 
 			try {
 				preparedStatement = connection.prepareStatement(query);
