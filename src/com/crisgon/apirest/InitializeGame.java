@@ -1,6 +1,7 @@
 package com.crisgon.apirest;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -92,7 +93,7 @@ public class InitializeGame {
 
 		ArrayList<Partida> partidas;
 		Jugador jugador;
-		
+
 		String nickname;
 		boolean terminada;
 
@@ -123,24 +124,48 @@ public class InitializeGame {
 
 		Partida partida;
 		String json = "";
-		
+
 		partida = PartidasOperations.getPartida(idGame);
 		partida.setTerminada(true);
-		
+
 		PartidasOperations.updatePartida(partida);
 		json = new Gson().toJson(partida);
-		
+
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	// @Path("raffle")
-	public void raffle(String idSesion, int idGame) {
+	/** Sortea quien comienza primero */
+	@Path("raffle/{idSession}/{idGame}")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response raffle(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame) {
+		Jugador jugador;
+		String json;
+		Random random;
+		int aleatorio;
 
+		random = new Random();
+		aleatorio = random.nextInt(1);
+
+		switch (aleatorio) {
+		case 0:
+			jugador = JugadorOperations.getJugador(idSession);
+			json = new Gson().toJson(jugador);
+			return Response.status(Response.Status.OK).entity(json).build();
+		case 1:
+			return null;
+		}
+		return null;
 	}
 
-	// @Path("playcard")
-	public void playCard(String idSesion, int idGame, String idCard, String feature, String hand) {
+	@Path("playcard/{idSession}/{idGame}/{idCard}/{feature}/{hand}")
+	@POST 
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response playCard(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame,
+			@PathParam("idCard") String idCard, @PathParam("feature") String feature, @PathParam("hand") String hand) {
 
+		
+		return null;
 	}
 
 	// @Path("ready")
