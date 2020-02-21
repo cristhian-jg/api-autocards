@@ -95,11 +95,14 @@ public class PartidasOperations {
 	public static boolean addPartida(Partida partida) {
 		boolean validado = false;
 		if (partida.getId() != 0) {
-			String query = "INSERT INTO partidas (jugador, ganada, terminada, fecha) VALUES('" + partida.getJugador()
-					+ "', " + partida.isGanada() + ", " + partida.isTerminada() + ", '" + partida.getFecha() + "'";
+			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + partida.getId() + ",'" + partida.getJugador()
+					+ "', " + partida.isGanada() + ", " + partida.isTerminada() + ", '" + partida.getFecha() + "')";
+			
+			System.out.println(query);
 			try {
 				Statement statement = connection.createStatement();
 				statement.executeUpdate(query);
+				System.out.print(query);
 				validado = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
