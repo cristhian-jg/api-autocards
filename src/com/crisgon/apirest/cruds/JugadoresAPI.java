@@ -34,7 +34,7 @@ public class JugadoresAPI {
 	private static final String TAG = "JugadoresAPI";
 
 	/** Endpoint que crea un jugador en la base de datos */
-	@Path("/create")
+	//@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -48,7 +48,7 @@ public class JugadoresAPI {
 	}
 
 	/** Endpoint que lee un jugador en la base de datos */
-	@Path("read")
+	//@Path("read")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doRead() {
@@ -58,7 +58,7 @@ public class JugadoresAPI {
 	}
 
 	/** Endpoint que actualiza un jugador en la base de datos */
-	@Path("update/{nickname}")
+	@Path("{nickname}")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class JugadoresAPI {
 	}
 
 	/** Endpoint que elimina un jugador en la base de datos */
-	@Path("delete/{nickname}")
+	@Path("{nickname}")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doDelete(@PathParam("nickname") String nickname) {
