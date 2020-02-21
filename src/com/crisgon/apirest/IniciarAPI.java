@@ -7,21 +7,24 @@ import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.crisgon.apirest.controller.CartaOperations;
-import com.crisgon.apirest.controller.ControlJuego;
+import com.crisgon.apirest.controller.JuegoOperations;
 import com.crisgon.apirest.controller.JugadorOperations;
 import com.crisgon.apirest.controller.PartidasOperations;
 import com.crisgon.apirest.model.Carta;
 import com.crisgon.apirest.model.Jugador;
 import com.crisgon.apirest.model.Partida;
 import com.crisgon.apirest.model.mecanica.Juego;
+import com.crisgon.apirest.model.mecanica.Jugada;
 import com.google.gson.Gson;
 
 /**
@@ -45,40 +48,11 @@ public class IniciarAPI {
 	 * @return Response LOGIN FAIL si el jugador no existe o la contraseña no es
 	 *         correcta
 	 */
-	@Path("login")
+	@Path("/login")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(Jugador jugador) {
-
-		ArrayList<Jugador> jugadores;
-
-		String nickname;
-		String password;
-
-		String json = "";
-
-		jugadores = JugadorOperations.getAll();
-
-		for (int i = 0; i < jugadores.size(); i++) {
-
-			nickname = jugadores.get(i).getNickname();
-			password = jugadores.get(i).getPassword();
-
-			if (nickname.equals(jugador.getNickname()) && password.equals(jugador.getPassword())) {
-				jugador = jugadores.get(i);
-				json = new Gson().toJson(jugador);
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-		}
-		return Response.status(401).entity(TAG + ": Login fail.").build();
-	}
-
-	@Path("login/{nickname}/{password}")
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@PathParam("nickname") String nickname, @PathParam("password") String password) {
+	public Response login(@FormParam("nickname") String nickname, @FormParam("password") String password) {
 
 		ArrayList<Jugador> jugadores;
 		Jugador jugador;
@@ -88,20 +62,45 @@ public class IniciarAPI {
 		jugadores = JugadorOperations.getAll();
 
 		for (int i = 0; i < jugadores.size(); i++) {
-
-			nickname = jugadores.get(i).getNickname();
-			password = jugadores.get(i).getPassword();
-
-			if (nickname.equals(nickname) && password.equals(password)) {
+			if (nickname.equals(jugadores.get(i).getNickname()) && password.equals(jugadores.get(i).getPassword())) {
 				jugador = jugadores.get(i);
 				json = new Gson().toJson(jugador);
 				return Response.status(Response.Status.OK).entity(json).build();
 			}
 		}
-
 		return Response.status(401).entity(TAG + ": Login fail.").build();
 	}
 
+	@Path("/register")
+	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response register(@FormParam("nombre") String nombre, @FormParam("nickname") String nickname, @FormParam("password") String password) {
+		
+		ArrayList<Jugador> jugadores;
+		Jugador jugador;
+		boolean existe;
+		
+		String json = "";
+		jugadores = JugadorOperations.getAll();
+		existe = false;
+		
+		for (int i = 0; i < jugadores.size(); i++) {
+			if (nickname.equals(jugadores.get(i).getNickname())) {
+				existe = true;
+			}
+		}
+		
+		if (!existe) {
+			jugador = new Jugador(nombre, nickname, password);
+			if (JugadorOperations.addJugador(jugador)) {
+				json = new Gson().toJson(jugador);
+				return Response.status(Response.Status.OK).entity(json).build();
+			}
+		}
+		return Response.status(400).entity(TAG + "Registration fail.").build();
+	}
+	
 	@Path("newgame/{idSession}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -110,22 +109,31 @@ public class IniciarAPI {
 
 		ArrayList<Partida> partidas = PartidasOperations.getAll();
 		String json;
+		boolean existe = false;
 
 		for (int i = 0; i < partidas.size(); i++) {
-			if (!partidas.get(i).getJugador().equals(idSession) && partidas.get(i).isTerminada()) {
+			if (partidas.get(i).getJugador().equals(idSession) && !partidas.get(i).isTerminada()) {
 				// Hay partidas en marcha para el usuario y por lo que devolvemos el idGame de
 				// esta partida para terminarla posteriormente.
+				existe = true;
+				System.out.print("newGame EXISTE y no esta terminado");
+				System.out.print("num " + partidas.get(i).getJugador());
 				json = new Gson().toJson(partidas.get(i).getId());
 				return Response.status(Response.Status.OK).entity(json).build();
-			} else {
-				Date date = new Date(Calendar.getInstance().getTime().getTime());
-				Partida partida = new Partida(idSession, false, false, date);
-				PartidasOperations.addPartida(partida);
-				int id = partidas.get(partidas.size() - 1).getId();
-				json = new Gson().toJson(id);
-				// Debe devolver el id de la nueva partida.
-				return Response.status(Response.Status.OK).entity(json).build();
 			}
+		}
+
+		if (!existe) {
+			System.out.print("newGame no EXISTE");
+			int idGame = partidas.get(partidas.size() - 1).getId() + 1;
+			Date date = new Date(Calendar.getInstance().getTime().getTime());
+			Partida partida = new Partida(idGame, idSession, false, false, date);
+			PartidasOperations.addPartida(partida);
+
+			json = new Gson().toJson(idGame);
+			// Debe devolver el id de la nueva partida.
+			System.out.println(partida.toString());
+			return Response.status(Response.Status.OK).entity(json).build();
 		}
 		return Response.status(400).entity("Something went wrong...").build();
 	}
@@ -151,15 +159,19 @@ public class IniciarAPI {
 	}
 
 	/** Sortea quien comienza primero y se reparten las cartas */
-	@Path("raffle/{idSession}/{idGame}")
-	@POST
+	@Path("raffle")
+	@GET
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response raffle(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame) {
+	public Response raffle(@QueryParam("idSession") String idSession, @QueryParam("idGame") int idGame) {
 
-		ControlJuego control;
+		JuegoOperations operations;
 		Juego juego;
 
-		ArrayList<Carta> cartasDisponibles = CartaOperations.getAll();
+		System.out.print("sesion "+idSession);
+		System.out.print("game "+idGame);
+		
+		ArrayList<Carta> cartas = CartaOperations.getAll();
 		ArrayList<Carta> cartasJugador;
 		ArrayList<Carta> cartasMaquina;
 
@@ -171,13 +183,13 @@ public class IniciarAPI {
 		cartasJugador = new ArrayList<>();
 		cartasMaquina = new ArrayList<>();
 
+		operations = new JuegoOperations(cartas);
+
 		random = new Random();
 		aleatorio = random.nextInt(1);
 
-		control = new ControlJuego();
-		control.setCartas(cartasDisponibles);
-		cartasJugador = control.repartir();
-		cartasMaquina = control.repartir();
+		cartasJugador = operations.getCartasJugador();
+		cartasMaquina = operations.getCartasMaquina();
 
 		switch (aleatorio) {
 		case 0:
@@ -194,18 +206,36 @@ public class IniciarAPI {
 	}
 
 	@Path("playcard/{idSession}/{idGame}/{idCard}/{feature}/{hand}")
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response playCard(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame,
-			@PathParam("idCard") String idCard, @PathParam("feature") String feature, @PathParam("hand") String hand) {
-
-		return null;
+			@PathParam("idCard") String idCard, @PathParam("feature") Caracteristica feature,
+			@PathParam("hand") int hand) {
+		Jugada jugada = new Jugada(idSession, idGame, idCard, feature, hand);
+		String json = new Gson().toJson(jugada);
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	@Path("ready/{idSession}/{idGame}")
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ready(@PathParam("idSession") String idSesion, @PathParam("idGame") int idGame) {
 		return Response.status(Response.Status.OK).build();
+	}
+
+//	@Path("check/")
+//	@POST()
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response check(@PathParam("") String string) {
+//		
+//		return null;
+//	}
+
+	@Path("estadisticas/{idSession}/{idGame}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getStats(@PathParam("idSession") String idSession, @PathParam("idGame") int idGame) {
+
+		return null;
 	}
 }
