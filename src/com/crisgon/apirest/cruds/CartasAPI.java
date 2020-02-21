@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -14,7 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.crisgon.apirest.controller.CartaOperations;
+import com.crisgon.apirest.controller.ControladorCarta;
 import com.crisgon.apirest.model.Carta;
 import com.google.gson.Gson;
 
@@ -32,54 +33,111 @@ public class CartasAPI {
 
 	private static final String TAG = "CartasAPI";
 
-	/** Endpoint que crea una carta en la base de datos */
-	@Path("create")
+	/**
+	 * [ENDPOINT] Permite crear una nueva carta la cual podrá aparecer en las proximas
+	 * partidas.
+	 * 
+	 * @param identificador @param marca @param modelo
+	 * @param motor         @param potencia @param velocidad
+	 * @param cilindros     @param revoluciones @param consumo
+	 * 
+	 * @return carta creada con los parametros introducidos.
+	 */
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doCreate(Carta carta) {
-		if (CartaOperations.addCarta(carta)) {
-			String json = new Gson().toJson(carta);
+	public Response doCreate(@FormParam("identificador") String identificador, @FormParam("marca") String marca,
+			@FormParam("modelo") String modelo, @FormParam("motor") int motor, @FormParam("potencia") int potencia,
+			@FormParam("velocidad") int velocidad, @FormParam("cilindros") int cilindros,
+			@FormParam("revoluciones") int revoluciones, @FormParam("consumo") double consumo) {
+
+		Carta carta;
+		String json;
+
+		if (ControladorCarta.agregarCarta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros,
+				revoluciones, consumo)) {
+
+			carta = new Carta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros, revoluciones,
+					consumo);
+
+			json = new Gson().toJson(carta);
+
 			return Response.status(Response.Status.OK).entity(json).build();
-		} else
-			return Response.status(400).entity("Creation failed, the user already exists").build();
+
+		} else {
+			
+			return Response.status(400).build();
+
+		}
+
 	}
 
-	/** Endpoint que lee una carta en la base de datos */
+	/**
+	 * [ENDPOINT] Permite obtener todas las cartas almacenadas en la base de datos haciendo una
+	 * conversión a JSON mediante Gson.
+	 * 
+	 * @return arreglo con todas las cartas disponibles en formato JSON.
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCartas() {
+		
+		ArrayList<Carta> cartas;
+		String json;
+		
+		cartas = ControladorCarta.getAll();
+		json =  new Gson().toJson(cartas);
+		
+		return Response.status(Response.Status.OK).entity(json).build();
+	}
+
+	/**
+	 * [ENDPOINT] Permite obtener una carta de la base de datos mediante su identificador
+	 * haciendo una conversión a JSON mediante Gson.
+	 * 
+	 * @param identificador
+	 * @return una carta en formato JSON.
+	 */
 	@Path("read")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doRead() {
-		ArrayList<Carta> cartas = CartaOperations.getAll();
-		String json = new Gson().toJson(cartas);
-		return Response.status(Response.Status.OK).entity(json).build();
-	}
-	
-	@Path("readUna")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response doReadUna(@QueryParam("id") String id) {
-		Carta carta = CartaOperations.getCarta(id);
-		String json = new Gson().toJson(carta);
+	public Response doReadUna(@QueryParam("identificador") String identificador) {
+
+		Carta carta;
+		String json;
+
+		carta = ControladorCarta.getCarta(identificador);
+		json = new Gson().toJson(carta);
+
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	/** Endpoint que actualiza una carta en la base de datos */
-	@Path("update")
+	//TODO METODO PARA ACTUALIZAR UNA CARTA.
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public void doUpdate() {
 	}
 
-	/** Endpoint que elimina una carta en la base de datos */
-	@Path("delete/{identificador}")
+	/**
+	 * [ENDPOINT] Permite borrar una carta de la base de datos medainte su identificador
+	 * 
+	 * @param identificador
+	 * @return respuesta positiva si ha eliminado la carta.
+	 * @return respuesta negativa si no ha eliminado la carta.
+	 */
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response doDelete(@PathParam("identificador") String identificador) {
-		String json = new Gson().toJson(CartaOperations.getCarta(identificador));
-		if (CartaOperations.deleteCarta(identificador)) {
-			return Response.status(Response.Status.OK).entity(json).build();
-		} else
-			return Response.status(400).entity(TAG + ": Deletion failed.").build();
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response doDelete(@QueryParam("identificador") String identificador) {
+
+		if (ControladorCarta.deleteCarta(identificador)) {
+
+			return Response.status(Response.Status.OK).build();
+
+		} else {
+			
+			return Response.status(400).build();
+		
+		}
+		
 	}
 }
