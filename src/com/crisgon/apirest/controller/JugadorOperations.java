@@ -97,7 +97,7 @@ public class JugadorOperations {
 					+ jugador.getPassword() + "')";
 			try {
 				Statement statement = connection.createStatement();
-				statement.executeQuery(query);
+				statement.executeUpdate(query);
 				validada = true;
 			} catch (SQLException e) {
 				validada = false;
