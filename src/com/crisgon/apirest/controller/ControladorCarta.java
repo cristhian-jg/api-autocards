@@ -15,10 +15,13 @@ import com.crisgon.apirest.model.Carta;
  * 
  */
 
-public class CartaOperations {
+public class ControladorCarta {
 	private static Connection connection = MySQLConnector.getConnection();
 
-	/** Devuelve todas las cartas de la base de datos */
+	/** 
+	 * 
+	 * @return
+	 */
 	public static ArrayList<Carta> getAll() {
 
 		ArrayList<Carta> cartas;
@@ -109,32 +112,37 @@ public class CartaOperations {
 		return carta;
 	}
 
-	public static boolean addCarta(Carta carta) {
+	// TODO El NULL de la SQL puede llegar a dar problemas
+	public static boolean addCarta(String identificador, String marca, String modelo, byte[] foto, int motor,
+			int potencia, int velocidad, int cilindros, int revoluciones, double consumo) {
 
+		Boolean estaAgregado = false;
 		Statement statement;
-		boolean validado = false;
+		String sql;
 
-		if (carta.getIdentificador() != null) {
-			String query = "INSERT INTO cartas (identificador, marca, modelo, foto, motor,"
-					+ " potencia, velocidad, cilindros, revoluciones, consumo) VALUES (" + "'"
-					+ carta.getIdentificador() + "', '" + carta.getMarca() + "', '" + carta.getModelo() + "', "
-					+ "null,"+ carta.getMotor()+ "," + carta.getPotencia() + "," + carta.getVelocidad() + ", "
-					+ carta.getCilindros() + "," + carta.getRevoluciones() + "," + carta.getConsumo() + ")";
+		if (identificador != null) {
+
+			sql = "INSERT INTO cartas (identificador, marca, modelo, foto, motor,"
+					+ " potencia, velocidad, cilindros, revoluciones, consumo) VALUES (" + "'" + identificador + "', '"
+					+ marca + "', '" + modelo + "', " + "null," + motor + "," + potencia + "," + velocidad + ", "
+					+ cilindros + "," + revoluciones + "," + consumo + ")";
+
 			try {
 				statement = connection.createStatement();
-				statement.executeUpdate(query);
-				validado = true;
+				statement.executeUpdate(sql);
+				estaAgregado = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
-				validado = false;
+				estaAgregado = false;
 			}
+
 		}
 
-		return validado;
+		return estaAgregado;
 	}
 
 	public static boolean deleteCarta(String identificador) {
-	
+
 		Statement statement;
 		boolean validado = false;
 		String query = "DELETE FROM cartas WHERE identificador = '" + identificador + "'";
