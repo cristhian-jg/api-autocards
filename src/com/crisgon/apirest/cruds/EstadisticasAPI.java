@@ -4,17 +4,19 @@ import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.crisgon.apirest.controller.CartaOperations;
-import com.crisgon.apirest.controller.EstadisticasOperations;
+import com.crisgon.apirest.controller.ControladorCarta;
+import com.crisgon.apirest.controller.ControladorEstadisticas;
 import com.crisgon.apirest.model.Estadistica;
 import com.google.gson.Gson;
 
@@ -30,40 +32,88 @@ import com.google.gson.Gson;
 @Path("/estadisticas")
 public class EstadisticasAPI {
 
-	@Path("create")
+	/**
+	 * [ENDPOINT] Permite crear una nueva estadistica.
+	 * 
+	 * @param id      @param jugador @param partida
+	 * @param ganadas @param perdidas @param empatadas
+	 * 
+	 * @return respuesta positiva con la estadistica creada en JSON.
+	 */
+	@Path("/create")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doCreate(Estadistica estadistica) {
-		if(EstadisticasOperations.addEstadistica(estadistica)) {
-			String json = new Gson().toJson(estadistica);
+	public Response doCreate(@FormParam("id") int id, @FormParam("jugador") String jugador,
+			@FormParam("partida") int partida, @FormParam("ganadas") int ganadas, @FormParam("perdidas") int perdidas,
+			@FormParam("empatadas") int empatadas) {
+
+		Estadistica estadistica;
+		String json;
+
+		if (ControladorEstadisticas.addEstadistica(id, jugador, partida, ganadas, perdidas, empatadas)) {
+
+			estadistica = new Estadistica(id, jugador, partida, ganadas, perdidas, empatadas);
+
+			json = new Gson().toJson(estadistica);
+
 			return Response.status(Response.Status.OK).entity(json).build();
-		} else return Response.status(400).entity("Creation failed, the user already exists").build();
+
+		} else {
+
+			return Response.status(400).build();
+
+		}
 	}
 
-	@Path("read")
+	/**
+	 * [ENDPOINT] Permite obtener todas las estadisticas almacenadas en la base de
+	 * datos haciendo una conversión a JSON mediante Gson.
+	 * 
+	 * @return respuesta positiva con el arreglo de todas las estadisticas
+	 *         disponibles en JSON.
+	 */
+	@Path("/getstats")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doRead() {
-		ArrayList<Estadistica> estadisticas = EstadisticasOperations.getAll();
-		String json = new Gson().toJson(estadisticas);
+	public Response getEstadisticas() {
+
+		ArrayList<Estadistica> estadisticas;
+		String json;
+
+		estadisticas = ControladorEstadisticas.getAll();
+		json = new Gson().toJson(estadisticas);
+
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	@Path("update")
+	// METODO PARA ACTUALIZAR UNA ESTADISTICA
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public void doUpdate() {
 	}
 
-	@Path("delete/{id}")
+	/**
+	 * [ENDPOINT] Permite borrar una estadistica de la base de datos mediante su
+	 * identificador.
+	 * 
+	 * @param id
+	 * @return respuesta positiva si ha eliminado la estadistica.
+	 * @return respuesta negativa si no ha eliminado la estadistica.
+	 */
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response doDelete(@PathParam("id") int id) {
-		String json = new Gson().toJson(EstadisticasOperations.getEstadistica(id));
-		if (EstadisticasOperations.deteleEstadistica(id)) {
-			return Response.status(Response.Status.OK).entity(json).build();
-		} else
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response doDelete(@QueryParam("id") int id) {
+
+		if (ControladorEstadisticas.deteleEstadistica(id)) {
+
+			return Response.status(Response.Status.OK).build();
+
+		} else {
+
 			return Response.status(400).entity("Deletion failed.").build();
+
+		}
+
 	}
 }

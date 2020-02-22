@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import com.crisgon.apirest.model.Jugador;
 import com.crisgon.apirest.model.Partida;
 
-public class PartidasOperations {
+public class ControladorPartidas {
 
 	private static Connection connection = MySQLConnector.getConnection();
 
@@ -92,12 +92,13 @@ public class PartidasOperations {
 
 	}
 
-	public static boolean addPartida(Partida partida) {
+	public static boolean addPartida(int id, String jugador, boolean ganada, boolean terminada, Date fecha) {
 		boolean validado = false;
-		if (partida.getId() != 0) {
-			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + partida.getId() + ",'" + partida.getJugador()
-					+ "', " + partida.isGanada() + ", " + partida.isTerminada() + ", '" + partida.getFecha() + "')";
-			
+		if (id != 0) {
+			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + id
+					+ ",'" + jugador + "', " + ganada + ", " + terminada + ", '"
+					+ fecha + "')";
+
 			System.out.println(query);
 			try {
 				Statement statement = connection.createStatement();

@@ -11,16 +11,12 @@ public class JuegoOperations {
 	private static final String TAG = "JuegoOperations";
 	private static final int CARTAS_POR_MANO = 6;
 
-	private ArrayList<Carta> cartasJugador;
-	private ArrayList<Carta> cartasMaquina;
+	private static ArrayList<Carta> cartasJugador;
+	private static ArrayList<Carta> cartasMaquina;
 
-	private ArrayList<Integer> numerosAleatoriosNoRepetidos;
+	private static ArrayList<Integer> numerosAleatoriosNoRepetidos;
 
-	public JuegoOperations(ArrayList<Carta> cartas) {
-		repartir(cartas);
-	}
-
-	public void repartir(ArrayList<Carta> cartas) {
+	public static void repartir(ArrayList<Carta> cartas) {
 
 		int aleatorio;
 
@@ -39,11 +35,11 @@ public class JuegoOperations {
 		}
 	}
 
-	public ArrayList<Carta> getCartasJugador() {
+	public static ArrayList<Carta> getCartasJugador() {
 		return cartasJugador;
 	}
 
-	public ArrayList<Carta> getCartasMaquina() {
+	public static ArrayList<Carta> getCartasMaquina() {
 		return cartasMaquina;
 	}
 }

@@ -4,6 +4,7 @@ public class Estadistica {
 
 	private int id;
 	private String jugador;
+	private int partida;
 	private int ganadas;
 	private int perdidas;
 	private int empatadas;
@@ -11,9 +12,10 @@ public class Estadistica {
 	public Estadistica() {
 	}
 
-	public Estadistica(int id, String jugador, int ganadas, int perdidas, int empatadas) {
+	public Estadistica(int id, String jugador, int partida, int ganadas, int perdidas, int empatadas) {
 		this.id = id;
 		this.jugador = jugador;
+		this.partida = partida;
 		this.ganadas = ganadas;
 		this.perdidas = perdidas;
 		this.empatadas = empatadas;
@@ -59,10 +61,18 @@ public class Estadistica {
 		this.empatadas = empatadas;
 	}
 
+	public int getPartida() {
+		return partida;
+	}
+
+	public void setPartida(int partida) {
+		this.partida = partida;
+	}
+
 	@Override
 	public String toString() {
-		return "Estadistica [id=" + id + ", jugador=" + jugador + ", ganadas=" + ganadas + ", perdidas=" + perdidas
-				+ ", empatadas=" + empatadas + "]";
+		return "Estadistica [id=" + id + ", jugador=" + jugador + ", partida=" + partida + ", ganadas=" + ganadas
+				+ ", perdidas=" + perdidas + ", empatadas=" + empatadas + "]";
 	}
 	
 }

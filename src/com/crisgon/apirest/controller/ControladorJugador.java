@@ -16,7 +16,7 @@ import com.crisgon.apirest.model.Jugador;
  * 
  */
 
-public class JugadorOperations {
+public class ControladorJugador {
 
 	private static Connection connection = MySQLConnector.getConnection();
 
@@ -89,12 +89,15 @@ public class JugadorOperations {
 		return jugador;
 	}
 
-	public static Boolean addJugador(Jugador jugador) {
+	public static boolean addJugador(String nickname, String nombre, String password) {
+		
 		Boolean validada = false;
-		if (jugador.getNickname() != null) {
-			String query = "INSERT INTO jugadores (nickname, nombre, password) VALUES("
-					+ "'" + jugador.getNickname() + "'," + "'" + jugador.getNombre() + "'," + "'"
-					+ jugador.getPassword() + "')";
+		String query;
+		
+		if (nickname != null) {
+			query = "INSERT INTO jugadores (nickname, nombre, password) VALUES("
+					+ "'" + nickname + "'," + "'" + nombre + "'," + "'"
+					+ password + "')";
 			try {
 				Statement statement = connection.createStatement();
 				statement.executeUpdate(query);
