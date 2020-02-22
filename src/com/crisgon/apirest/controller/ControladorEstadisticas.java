@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import com.crisgon.apirest.model.Estadistica;
 
-public class EstadisticasOperations {
+public class ControladorEstadisticas {
 
 	private static Connection connection = MySQLConnector.getConnection();
 
@@ -21,6 +21,7 @@ public class EstadisticasOperations {
 
 		int id;
 		String jugador;
+		int partida;
 		int ganadas;
 		int perdidas;
 		int empatadas;
@@ -38,11 +39,12 @@ public class EstadisticasOperations {
 
 				id = resultSet.getInt("id");
 				jugador = resultSet.getString("jugador");
+				partida = resultSet.getInt("partida");
 				ganadas = resultSet.getInt("ganadas");
 				perdidas = resultSet.getInt("perdidas");
 				empatadas = resultSet.getInt("empatadas");
 				
-				estadistica = new Estadistica(id, jugador, ganadas, perdidas, empatadas);
+				estadistica = new Estadistica(id, jugador, partida, ganadas, perdidas, empatadas);
 
 				estadisticas.add(estadistica);
 			}
@@ -60,6 +62,7 @@ public class EstadisticasOperations {
 		ResultSet resultSet;
 
 		String jugador;
+		int partida;
 		int ganadas;
 		int perdidas;
 		int empatadas;
@@ -73,11 +76,12 @@ public class EstadisticasOperations {
 
 			if (resultSet.next()) {
 				jugador = resultSet.getString("jugador");
+				partida = resultSet.getInt("partida");
 				ganadas = resultSet.getInt("ganadas");
 				perdidas = resultSet.getInt("perdidas");
 				empatadas = resultSet.getInt("empatadas");
 
-				estadistica = new Estadistica(id, jugador, ganadas, perdidas, empatadas);
+				estadistica = new Estadistica(id, jugador, partida, ganadas, perdidas, empatadas);
 			}
 
 		} catch (SQLException sqle) {
@@ -87,27 +91,30 @@ public class EstadisticasOperations {
 		return estadistica;
 	}
 	
-	public static boolean addEstadistica(Estadistica estadistica) {
+	public static boolean addEstadistica(int id, String jugador, int partida, int ganadas, int perdidas, int empatadas) {
 		
-
+		Boolean estaAgregado = false;
 		Statement statement;
-		boolean validado = false;
+		String sql;
 
-		if (estadistica.getId() != 0) {
-			String query = "INSERT INTO estadisticas (id, jugador, ganadas, perdidas, empatadas) VALUES("
-					+ estadistica.getId() + ", '" + estadistica.getJugador() + "'," + estadistica.getGanadas() 
-					+ "," + estadistica.getPerdidas() + "," + estadistica.getEmpatadas();
+		if (id != 0) {
+			sql = "INSERT INTO estadisticas (id, jugador, partida, ganadas, perdidas, empatadas) VALUES("
+					+ id + ", '" + jugador + "', " + partida + ", " + ganadas
+					+ "," + perdidas + "," + empatadas;
+			
 			try {
+				
 				statement = connection.createStatement();
-				statement.executeUpdate(query);
-				validado = true;
+				statement.executeUpdate(sql);
+				estaAgregado = true;
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				validado = false;
+				estaAgregado = false;
 			}
 		}
 		
-		return validado;
+		return estaAgregado;
 	}
 	
 	public static boolean deteleEstadistica(int id) {
