@@ -126,9 +126,12 @@ public class ControladorPartidas {
 			query.append(", terminada = " + partida.isTerminada());
 			if (partida.getFecha() != null)
 				query.append(", fecha = '" + partida.getFecha() + "'");
-			query.append("WHERE id = '" + partida.getId() + "'");
+			query.append(" WHERE id = " + partida.getId());
 			try {
 				statement = connection.createStatement();
+				
+				System.out.println(query);
+				
 				statement.executeUpdate(query.toString());
 				validado = true;
 			} catch (SQLException e) {
