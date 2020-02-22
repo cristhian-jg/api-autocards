@@ -34,15 +34,17 @@ public class CartasAPI {
 	private static final String TAG = "CartasAPI";
 
 	/**
-	 * [ENDPOINT] Permite crear una nueva carta la cual podrá aparecer en las proximas
-	 * partidas.
+	 * [ENDPOINT] Permite crear una nueva carta la cual podrá aparecer en las
+	 * proximas partidas.
 	 * 
 	 * @param identificador @param marca @param modelo
 	 * @param motor         @param potencia @param velocidad
 	 * @param cilindros     @param revoluciones @param consumo
 	 * 
-	 * @return carta creada con los parametros introducidos.
+	 * @return respuesta positiva con la carta creada en JSON.
+	 * @return respuesta negativa si no ha creado la estadistica.
 	 */
+	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -54,7 +56,7 @@ public class CartasAPI {
 		Carta carta;
 		String json;
 
-		if (ControladorCarta.agregarCarta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros,
+		if (ControladorCarta.addCarta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros,
 				revoluciones, consumo)) {
 
 			carta = new Carta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros, revoluciones,
@@ -65,7 +67,7 @@ public class CartasAPI {
 			return Response.status(Response.Status.OK).entity(json).build();
 
 		} else {
-			
+
 			return Response.status(400).build();
 
 		}
@@ -73,35 +75,37 @@ public class CartasAPI {
 	}
 
 	/**
-	 * [ENDPOINT] Permite obtener todas las cartas almacenadas en la base de datos haciendo una
-	 * conversión a JSON mediante Gson.
+	 * [ENDPOINT] Permite obtener todas las cartas almacenadas en la base de datos
+	 * haciendo una conversión a JSON mediante Gson.
 	 * 
-	 * @return arreglo con todas las cartas disponibles en formato JSON.
+	 * @return respuesta positiva con el arreglo de todas las cartas disponibles en
+	 *         JSON.
 	 */
+	@Path("/getcards")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCartas() {
-		
+
 		ArrayList<Carta> cartas;
 		String json;
-		
+
 		cartas = ControladorCarta.getAll();
-		json =  new Gson().toJson(cartas);
-		
+		json = new Gson().toJson(cartas);
+
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	/**
-	 * [ENDPOINT] Permite obtener una carta de la base de datos mediante su identificador
-	 * haciendo una conversión a JSON mediante Gson.
+	 * [ENDPOINT] Permite obtener una carta de la base de datos mediante su
+	 * identificador haciendo una conversión a JSON mediante Gson.
 	 * 
 	 * @param identificador
 	 * @return una carta en formato JSON.
 	 */
-	@Path("read")
+	@Path("/getcard")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doReadUna(@QueryParam("identificador") String identificador) {
+	public Response getCarta(@QueryParam("identificador") String identificador) {
 
 		Carta carta;
 		String json;
@@ -112,19 +116,21 @@ public class CartasAPI {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	//TODO METODO PARA ACTUALIZAR UNA CARTA.
+	// TODO METODO PARA ACTUALIZAR UNA CARTA.
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public void doUpdate() {
 	}
 
 	/**
-	 * [ENDPOINT] Permite borrar una carta de la base de datos medainte su identificador
+	 * [ENDPOINT] Permite borrar una carta de la base de datos medainte su
+	 * identificador.
 	 * 
 	 * @param identificador
 	 * @return respuesta positiva si ha eliminado la carta.
 	 * @return respuesta negativa si no ha eliminado la carta.
 	 */
+	@Path("/delete")
 	@DELETE
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response doDelete(@QueryParam("identificador") String identificador) {
@@ -134,10 +140,10 @@ public class CartasAPI {
 			return Response.status(Response.Status.OK).build();
 
 		} else {
-			
+
 			return Response.status(400).build();
-		
+
 		}
-		
+
 	}
 }
