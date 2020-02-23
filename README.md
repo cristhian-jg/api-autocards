@@ -46,7 +46,29 @@ Con los metódos ya implementados hice unas pequeñas pruebas para verificar que
 
 Una vez hecha mi investigación ya tenía mucho más claro como abarcar los endpoints, en este punto del proyecto empezaba a verlo todo más claro, y apartir de aquí mis días de proyecto empezaron a hacer un poco más productivos. 
 
-En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las rutas que tendrían, y el tipo que eran, y si consumirian recursos o los producirian, en principio todo esto que había hecho estaba bien, pero claro todos mis metodos no devolvían nada estaban a void, por lo que tuve que ayudarme un poco del ejercicio de las apirest que estuvimos haciendo en acceso a datos, en este vi que soliamos devolver un strings, pero recordé que habiamos visto las Response, que eran respuestas http por lo que elegí la opción de devolver Response, lo cual se me confirmo despues que era lo correcto. Bien, pues mis endpoints simplemente se dedican a transformar los objetos en json y responderle con estos al cliente, por lo que como yo contaba ya con una clase controladora que hago todo esto los endpoitns del clud eran cosa de coser y canttar
+En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las rutas que tendrían, y el tipo que eran, y si consumirian recursos o los producirian, en principio todo esto que había hecho estaba bien, pero claro todos mis metodos no devolvían nada estaban a void, por lo que tuve que ayudarme un poco del ejercicio de las apirest que estuvimos haciendo en acceso a datos, en este vi que soliamos devolver un strings, pero recordé que habiamos visto las Response, que eran respuestas http por lo que elegí la opción de devolver Response, lo cual se me confirmo despues que era lo correcto. Bien, pues mis endpoints simplemente se dedican a usar las clases controladoras para hacer las operaciones correspondiente y dependiendo de lo que devuelvan es transformado a json y se le envian al cliente, gracias a las clases controladoras los endpoitns del clud eran cosa de coser y cantar, aquí un ejemplo:
+
+```java
+	/**
+	 * [ENDPOINT] Permite obtener una carta de la base de datos mediante su
+	 * identificador haciendo una conversión a JSON mediante Gson.
+	 * 
+	 * @param identificador
+	 * @return una carta en formato JSON.
+	 */
+	@Path("/getcard")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCarta(@QueryParam("identificador") String identificador) {
+		Carta carta;
+		String json;
+		carta = ControladorCarta.getCarta(identificador);
+		json = new Gson().toJson(carta);
+		return Response.status(Response.Status.OK).entity(json).build();
+	}
+```
+
+
 
 Una vez aprendí y a hacer las conversiones a JSON con GSON y devolverlos en el response todo iba más fluido. Por lo que empecé tambien a hacer los endpoints correspondientes al juego, por lo menos el esqueleto, y para esto me ayude de la grafica que aparece en el PDF en el que se comunica el cliente con el servidor.
 
