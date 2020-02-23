@@ -92,6 +92,7 @@ public class ControladorPartidas {
 
 	}
 
+	
 	public static boolean addPartida(int id, String jugador, boolean ganada, boolean terminada, Date fecha) {
 		boolean validado = false;
 		if (id != 0) {
@@ -113,20 +114,20 @@ public class ControladorPartidas {
 		return validado;
 	}
 
-	public static boolean updatePartida(Partida partida) {
+	public static boolean updatePartida(int id, String jugador, boolean ganada, boolean terminada, Date fecha) {
 
 		Statement statement;
 		StringBuilder query = new StringBuilder();
 		boolean validado = false;
 
-		if (partida.getJugador() != null || partida.getFecha() != null) {
+		if (jugador != null || fecha != null) {
 			query.append("UPDATE partidas SET ");
-			if (partida.getJugador() != null)
-				query.append("jugador = '" + partida.getJugador() + "'");
-			query.append(", terminada = " + partida.isTerminada());
-			if (partida.getFecha() != null)
-				query.append(", fecha = '" + partida.getFecha() + "'");
-			query.append(" WHERE id = " + partida.getId());
+			if (jugador != null)
+				query.append("jugador = '" + jugador + "'");
+			query.append(", terminada = " + terminada);
+			if (fecha != null)
+				query.append(", fecha = '" + fecha + "'");
+			query.append(" WHERE id = " + id);
 			try {
 				statement = connection.createStatement();
 				
