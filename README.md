@@ -10,7 +10,9 @@
 
 En esta memoria de trabajo/explicativa resaltaré los puntos más importantes de la creación de mi aplicación, la cual se basa en un juego de cartas de coches en el que el cliente jugará contra el servidor. Lo primero que hice a la hora de empezar con el proyecto fue comprobar que **Apache Tomcat**, el servidor web con el que voy a trabajar, no diera ningún de problema y por fortuna así fue. Tambien tenía que empezar a decidirme con que base de datos trabajar, habiendo muchas opciones al final me decidí por **MySQL**, que es además lo que se recomendaba para hacer el proyecto. Lo siguiente a pensar fue ¿implemento yo todos los modelo o dejo que Hibernate lo hago por mi?, la primerá opción era Hibernate, además me gustaba la idea de ahorrar tiempo contruyendo clases, pero al conectar la base de datos con este framework encontraba varios errores, investigué un poco pero no me extendí mucho, ya que siempre podía construir las clases a mano y utilizar el driver de MySQL, así que mediante Maven agregué las correspondientes dependencias para poder empezar a trabajar, así que para la creación de la base de datos tuve que utilizar MySQL Workbench.
 
-## 3. CONSTRUYENDO EL SERVIDOR
+### 2. DISEÑANDO LA BASE DE DATOS 
+
+### 3. CONSTRUYENDO EL SERVIDOR
 
 Al iniciar con el proyecto con Maven tuve que agregar las correspondientes dependecias, y cambiar algunos valores de configuración del archivo web.xml, es algo que hemos visto en clase y no veo necesario resaltar mucho aquí. En un principio no tenía bastante claro por donde empezar, esto de las API era algo nuevo y tenía mis dudas así que el primer día de proyecto lo dediqué a investigar sobre como estaban estructuradas las api, cual era el metodo de trabajo, para que servian exactamente, en esta primera investigación ya me hice un poco a la idea de lo que podía ser el proyecto, ya sabía por donde empezar así que lo primero que hice fue lo más facil y simple que se me ocurrió y se pedía hacer en el trabajo las operaciones CRUD, así no perdía más tiempo mientras pensaba en lo demás, además es algo que llevo haciendo durante todo el curso y se podría decir que lo tenía más que asimilado.   
 
@@ -36,4 +38,9 @@ public class MySQLConnector {
 }
 
 ```
+Una vez creada esta clase ya me puse con los controladores los cuales realizaban las operaciones de creación, lectura, actualización y borrado sobre la base de datos, para esto utilicé las clases Statement y ResultSet que era lo que conocía. Estas clases eran las 4 nuevamente muy similares, con lo que con una ya tenía practicamente todas hechas, solo que tenía que cambiar alguna que otra cosa.
+
+Con los metódos ya implementados hice unas pequeñas pruebas para verificar que estaban funcionando y así fue, por lo que ya tenía el CRUD de la aplicación hecho, por lo que me tocaba pasar al siguiente paso, crear los endpoints del servidor web, era algo que aún no tenía muy claro del todo así que simplemente me dedique a montar el esqueleto de los endpoints titulando los metodos, viendo cuales serían los metodos GET SET PUT DELETE, algo que no entendía del todo pero una vez estudiado no me costó tanto. Una vez tuve el esqueleto de los endpoints, completamente vacios, me quede un poco estancado porque no tenía claro el siguiente paso. Así que me puse a investigar nuevamente, que era exactamente un endpoint, su estructura y que debía contener, lo que nos lleva al siguiente apartado.
+
+### 4. IMPLEMENTADO LOS ENDPOITNS
 
