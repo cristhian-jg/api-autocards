@@ -46,7 +46,7 @@ public class JugadoresAPI {
 	 */
 	@Path("/create")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response doCreate(@FormParam("nickname") String nickname, @FormParam("nombre") String nombre,
 			@FormParam("password") String password) {
