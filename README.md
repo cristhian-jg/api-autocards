@@ -16,5 +16,24 @@ Al iniciar con el proyecto con Maven tuve que agregar las correspondientes depen
 
 Con el proyecto creado y configurado empecé a escribir las primeras clases, estas fueron los modelos, los cuales coincidian con las tablas de la base de datos con la que estamos trabajando, ya que de alguna manera nos servirín de paquete para traernos las tablas a nuestro proyecto, estas clases son Carta, Jugador, Partida y Estadistica definidas según las columnas de las tablas, con sus respectivos metodo getters, setters y string, no me llevo mucho tiempo crear estas clases gracias al generador de código de Eclipse eso sí, estas clases han pasado por varias alteraciones y tuve que cambiar algun que otro valor, lo que significaba tambien cambiarlo en la base de datos, ya que tenían que coincidir.
 
-Una vez creadas estas clases tenía que empezar a darles uso, a trabajar con ellas, así que lo siguiente que hice fue implementar la conexión con el driver de MySQL, así que agregue la dependecia al pom.xml y empecé a crear otras nuevas clases las cuales harían las operaciones con la base de datos, esto sería el controlador.  
+Una vez creadas estas clases tenía que empezar a darles uso, a trabajar con ellas, así que lo siguiente que hice fue implementar la conexión con el driver de MySQL, así que agregue la dependecia al pom.xml y empecé a crear otras nuevas clases las cuales harían las operaciones con la base de datos, estas clases serían las clases controladoras ControlarCarta, ControladorJugador, ControladorParta y ControladorEstadistica. Antes de empezar a trabajar con estas clases debía definir el conector de MySQL, el cual si que medio algún problema, pero no me llevo demasiado tiempo solucionarlo, ya que se trabaja de una simple línea de código, con lo que está clase se quedó así.
+
+```java
+public class MySQLConnector {
+	public static Connection getConnection() {
+		Connection connection = null;
+		String usuario = "root";
+		String contraseña = "interfaces";
+		String urlConnection = "jdbc:mysql://localhost:3306/autocartas?serverTimezone=UTC"; // Puerto por defecto: 3306											
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); //Linea de código necesaria para una correcta conexión
+			connection = DriverManager.getConnection(urlConnection, usuario, contraseña);
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return connection;
+	}
+}
+
+```
 
