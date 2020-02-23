@@ -70,5 +70,9 @@ En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las 
 
 
 
-Una vez aprendí y a hacer las conversiones a JSON con GSON y devolverlos en el response todo iba más fluido. Por lo que empecé tambien a hacer los endpoints correspondientes al juego, por lo menos el esqueleto, y para esto me ayude de la grafica que aparece en el PDF en el que se comunica el cliente con el servidor.
+Una vez aprendí y a hacer las conversiones a JSON con GSON y devolverlos en el response todo iba más fluido. Por lo que empecé tambien a hacer los endpoints correspondientes al juego, por lo menos el esqueleto, y para esto me ayude de la grafica que aparece en el PDF en el que se comunica el cliente con el servidor. Despues de hacer esto empecé a trabajar en el primer endpoint que contenía la clase del juego, el login. No me compliqué mucho la vida haciendo un login, pude haber usado metodos de para encriptar el código y cosas así, pero decidí por hacerlo basico, un simple equals que comprobara que el usuario introducido coincide con la contraseña introducida, no quería perder mucho tiempo ya que le tenía un miedo especial a los siguientes endpoints. Mientras hacia el login me surgío la duda sobre si podía devolver respuestas negativas en caso de que haya fallado, sabía que sí pero no sabía como, así que tuve que preguntar, se me resolvió rapidamente, lo que me dio un poco de más juego con los endpoints. Una vez hice el login, sabía que tenía que empezar a implementar un poco la logica y funcionamiento del juego, lo cual me daba un poco de miedo ya que no tenía muy claro como iba a conseguir que esto funcionase, por lo que me puse a hacer un endpoint de registro lo que me daba tiempo a pensar un poco más. 
+
+
+
+
 
