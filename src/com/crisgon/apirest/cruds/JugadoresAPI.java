@@ -65,7 +65,6 @@ public class JugadoresAPI {
 		} else {
 
 			return Response.status(400).build();
-
 		}
 
 	}
@@ -97,17 +96,17 @@ public class JugadoresAPI {
 	 * @param nickname
 	 * @return
 	 */
-	@Path("{nickname}")
+	@Path("/update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response doUpdate(Jugador jugador, @PathParam("nickname") String nickname) {
+	public Response doUpdate(@FormParam("nickname") String nickname, @FormParam("nombre") String nombre,
+			@FormParam("password") String password) {
 
 		String json;
 
 		try {
-			jugador.setNickname(nickname);
-			ControladorJugador.updateJugador(jugador);
+			ControladorJugador.updateJugador(nickname, nombre, password);
 
 			json = new Gson().toJson(ControladorJugador.getJugador(nickname));
 			return Response.status(Response.Status.OK).entity(json).build();
