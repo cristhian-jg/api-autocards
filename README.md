@@ -42,5 +42,9 @@ Una vez creada esta clase ya me puse con los controladores los cuales realizaban
 
 Con los metódos ya implementados hice unas pequeñas pruebas para verificar que estaban funcionando y así fue, por lo que ya tenía el CRUD de la aplicación hecho, por lo que me tocaba pasar al siguiente paso, crear los endpoints del servidor web, era algo que aún no tenía muy claro del todo así que simplemente me dedique a montar el esqueleto de los endpoints titulando los metodos, viendo cuales serían los metodos GET SET PUT DELETE, algo que no entendía del todo pero una vez estudiado no me costó tanto. Una vez tuve el esqueleto de los endpoints, completamente vacios, me quede un poco estancado porque no tenía claro el siguiente paso. Así que me puse a investigar nuevamente, que era exactamente un endpoint, su estructura y que debía contener, lo que nos lleva al siguiente apartado.
 
-### 4. IMPLEMENTADO LOS ENDPOITNS
+### 4. IMPLEMENTADO LOS ENDPOINTS
+
+Una vez hecha mi investigación ya tenía mucho más claro como abarcar los endpoints, en este punto del proyecto empezaba a verlo todo más claro, y apartir de aquí mis días de proyecto empezaron a hacer un poco más productivos. 
+
+En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las rutas que tendrían, y el tipo que eran, y si consumirian recursos o los producirian, en principio todo esto que había hecho estaba bien, pero claro todos mis metodos no devolvían nada estaban a void, por lo que tuve que ayudarme un poco del ejercicio de las apirest que estuvimos haciendo en acceso a datos, en este vi que soliamos devolver un strings, pero recordé que habiamos visto las Response, que eran respuestas http por lo que elegí la opción de devolver Response, lo cual se me confirmo despues que era lo correcto.
 
