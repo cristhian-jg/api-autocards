@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Autocartas - Juego de cartas con coches</title>
+
+<style type="text/css">
+h1 {
+	color: black;
+	font-family: Verdana;
+}
+</style>
+
+</head>
+<body>
+	<h1>Autocartas</h1>
+
+	<h2>Lista de endpoints Jugadores</h2>
+
+	<h3>POST - /jugadores/create</h3>
+
+	<form id="form-jugadores-create" method="POST"
+		action="http://localhost:8080/Autocartas/rest/jugadores/create">
+		<p>
+			<label>Nickname </label><input type="text" name="nickname" />
+		</p>
+		<p>
+			<label>Nombre </label><input type="text" name="nombre" />
+		</p>
+		<p>
+			<label>Password </label><input type="password" name="password" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>GET - /jugadores/getplayers</h3>
+
+	<form id="form-jugadores-read" method="GET"
+		action="http://localhost:8080/Autocartas/rest/jugadores/getcards">
+		<input type="submit" value="Consultar" />
+		</p>
+	</form>
+
+	<h3>PUT - /jugadores/update</h3>
+
+	<form id="form-jugadores-update" method="PUT"
+		action="http://localhost:8080/Autocartas/rest/jugadores/update">
+		<p>
+			<label>Nickname </label><input type="text" name="nickname" />
+		</p>
+		<p>
+			<label>Nombre </label><input type="text" name="nombre" />
+		</p>
+		<p>
+			<label>Password </label><input type="password" name="password" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>DELETE - /jugadores/delete</h3>
+
+	<form id="form-jugadores-delete" method="DELETE"
+		action="http://localhost:8080/Autocartas/rest/jugadores/delete">
+		<p>
+			<label>Identificador </label><input type="text" name="identificador" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+</body>
+</html>
