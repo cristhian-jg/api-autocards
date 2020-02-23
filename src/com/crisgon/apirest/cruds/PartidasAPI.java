@@ -94,15 +94,16 @@ public class PartidasAPI {
 	/** Endpoint que actualiza una partida en la base de datos */
 	@Path("update/{id}")
 	@PUT
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_FORM_URLENCODED)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doUpdate(Partida partida, @PathParam("id") int id) {
+	public Response doUpdate(@FormParam("id") int id, @FormParam("jugador") String jugador,
+			@FormParam("ganada") boolean ganada, @FormParam("terminada") boolean terminada,
+			@FormParam("fecha") Date fecha) {
 
 		String json;
 
 		try {
-			partida.setId(id);
-			ControladorPartidas.updatePartida(partida);
+			ControladorPartidas.updatePartida(id, jugador, ganada, terminada, fecha);
 
 			json = new Gson().toJson(ControladorPartidas.getPartida(id));
 			return Response.status(Response.Status.OK).entity(json).build();

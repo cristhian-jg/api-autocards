@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Autocartas - Juego de cartas con coches</title>
+
+<style type="text/css">
+h1 {
+	color: black;
+	font-family: Verdana;
+}
+</style>
+
+</head>
+<body>
+	<h1>Autocartas</h1>
+
+	<h2>Lista de endpoints Estadisticas</h2>
+
+	<h3>POST - /estadisticas/create</h3>
+
+	<form id="form-estadisticas-create" method="POST"
+		action="http://localhost:8080/Autocartas/rest/estadisticas/create">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<label>Jugador </label><input type="text" name="jugador" />
+		</p>
+		<p>
+			<label>Id Partida</label><input type="number" name="partida" />
+		</p>
+		
+		<p>
+			<label>Ganadas </label><input type="number" name="ganadas" />
+		</p>
+		<p>
+			<label>Perdidas </label><input type="number" name="perdidas" />
+		</p>
+		
+		<p>
+			<label>Empatadas </label><input type="number" name="empatadas" />
+		</p>
+	
+		<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>GET - /estadisticas/getstats</h3>
+
+	<form id="form-partidas-read" method="GET"
+		action="http://localhost:8080/Autocartas/rest/estadisticas/getstats">
+		<input type="submit" value="Consultar" />
+		</p>
+	</form>
+
+	<h3>PUT - /estadisticas/update</h3>
+
+	<form id="form-estadisticas-update" method="PUT"
+		action="http://localhost:8080/Autocartas/rest/estadisticas/update">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<label>Jugador </label><input type="text" name="jugador" />
+		</p>
+		<p>
+			<label>Id Partida</label><input type="number" name="partida" />
+		</p>
+		
+		<p>
+			<label>Ganadas </label><input type="number" name="ganadas" />
+		</p>
+		<p>
+			<label>Perdidas </label><input type="number" name="perdidas" />
+		</p>
+		
+		<p>
+			<label>Empatadas </label><input type="number" name="empatadas" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>DELETE - /estadisticas/delete</h3>
+
+	<form id="form-jugadores-delete" method="DELETE"
+		action="http://localhost:8080/Autocartas/rest/estadisticas/delete">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+</body>
+</html>

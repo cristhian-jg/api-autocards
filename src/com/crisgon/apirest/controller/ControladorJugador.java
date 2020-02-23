@@ -111,25 +111,25 @@ public class ControladorJugador {
 		return validada;
 	}
 
-	public static void updateJugador(Jugador jugador) {
+	public static void updateJugador(String nickname, String nombre, String password) {
 
 		Statement statement;
 
 		StringBuilder query = new StringBuilder();
 
-		if (jugador.getNombre() != null || jugador.getPassword() != null) {
+		if (nombre != null || password != null) {
 
 			query.append("UPDATE jugadores SET ");
 
-			if (jugador.getNombre() != null) {
-				query.append("nombre = '" + jugador.getNombre() + "'");
+			if (nombre != null) {
+				query.append("nombre = '" + nombre + "'");
 			}
 
-			if (jugador.getPassword() != null) {
-				query.append(", password = '" + jugador.getPassword() + "'");
+			if (password != null) {
+				query.append(", password = '" + password + "'");
 			}
 
-			query.append("WHERE nickname = '" + jugador.getNickname() + "'");
+			query.append("WHERE nickname = '" + nickname + "'");
 
 			System.out.print(query);
 

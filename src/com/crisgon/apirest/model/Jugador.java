@@ -52,7 +52,5 @@ public class Jugador implements Serializable {
 	public String toString() {
 		return "Jugador [nickname=" + nickname + ", nombre=" + nombre + ", password=" + password + "]";
 	}
-	
-	
 
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Autocartas - Juego de cartas con coches </title>
+
+<style type="text/css">
+ h1 { color: black; font-family: Verdana; }
+</style>
+
+</head>
+	<body>	
+		<h1>Autocartas</h1>
+	
+		<h2>Lista de endpoints Cartas </h2>
+		
+		<h3>POST - /cartas/create</h3>
+		
+		<form id="form-cartas-create" method="POST" action="http://localhost:8080/Autocartas/rest/cartas/create">
+			<p> <label>Identificador </label><input type="text" name="identificador" /> </p>
+			<p> <label>Marca </label><input type="text" name="marca" /> </p>
+			<p> <label>Modelo </label><input type="text" name="identificador" /> </p>
+			<p> <label>Motor </label><input type="text" name="marca" /> </p>
+			<p> <label>Potencia </label><input type="text" name="identificador" /> </p>
+			<p> <label>Velocidad </label><input type="text" name="marca" /> </p>
+			<p> <label>Cilindros </label><input type="text" name="identificador" /> </p>
+			<p> <label>Revoluciones </label><input type="text" name="marca" /> </p>
+			<p> <label>Consumo </label><input type="text" name="identificador" /> </p>
+			<p> <input type="submit" value="Enviar"></p>
+		</form>
+		
+		<h3>GET - /cartas/getcards</h3>
+		
+		<form id="form-cartas-read" method="GET" action="http://localhost:8080/Autocartas/rest/cartas/getcards">
+			<input type="submit" value="Consultar"/> </p>
+		</form>
+		
+		<h3>PUT - /cartas/update</h3>
+		
+		<form id="form-cartas-update" method="PUT" action="http://localhost:8080/Autocartas/rest/cartas/update">
+			<p> <label>Identificador </label><input type="text" name="identificador" /> </p>
+			<p> <label>Marca </label><input type="text" name="marca" /> </p>
+			<p> <label>Modelo </label><input type="text" name="identificador" /> </p>
+			<p> <label>Motor </label><input type="text" name="marca" /> </p>
+			<p> <label>Potencia </label><input type="text" name="identificador" /> </p>
+			<p> <label>Velocidad </label><input type="text" name="marca" /> </p>
+			<p> <label>Cilindros </label><input type="text" name="identificador" /> </p>
+			<p> <label>Revoluciones </label><input type="text" name="marca" /> </p>
+			<p> <label>Consumo </label><input type="text" name="identificador" /> </p>
+			<p> <input type="submit" value="Enviar"></p>
+		</form>
+		
+		<h3>DELETE - /cartas/delete</h3>
+		
+		<form id="form-cartas-delete" method="DELETE" action="http://localhost:8080/Autocartas/rest/cartas/delete">
+			<p> <label>Identificador </label><input type="text" name="identificador" /> </p>
+			<p> <input type="submit" value="Enviar"></p>
+		</form>
+	</body>
+</html>

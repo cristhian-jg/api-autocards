@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Autocartas - Juego de cartas con coches</title>
+
+<style type="text/css">
+h1 {
+	color: black;
+	font-family: Verdana;
+}
+</style>
+
+</head>
+<body>
+	<h1>Autocartas</h1>
+
+	<h2>Lista de endpoints Partidas</h2>
+
+	<h3>POST - /jugadores/create</h3>
+
+	<form id="form-partidas-create" method="POST"
+		action="http://localhost:8080/Autocartas/rest/partidas/create">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<label>Jugador </label><input type="text" name="jugador" />
+		</p>
+		<p>
+			<label>Ganada</label><input type="text" name="nombre" />
+		</p>
+		<p>
+			<label>Terminada </label> 
+			<label>Sí</label><input type="checkbox" class=radio name="terminada" />
+			<label>No</label><input type="checkbox" class=radio name="terminada" />
+		</p>
+		
+		<p>
+			<label>Ganada </label> 
+			<label>Sí</label><input type="checkbox" class=radio name="ganada" />
+			<label>No</label><input type="checkbox" class=radio name="ganada" />
+		</p>
+		<p>
+			<label>Fecha </label><input type="date" name="fecha" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>GET - /partida/getgames</h3>
+
+	<form id="form-partidas-read" method="GET"
+		action="http://localhost:8080/Autocartas/rest/partidas/getgames">
+		<input type="submit" value="Consultar" />
+		</p>
+	</form>
+
+	<h3>PUT - /partida/update</h3>
+
+	<form id="form-jugadores-update" method="PUT"
+		action="http://localhost:8080/Autocartas/rest/jugadores/update">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<label>Jugador </label><input type="text" name="jugador" />
+		</p>
+		<p>
+			<label>Ganada</label><input type="text" name="nombre" />
+		</p>
+		<p>
+			<label>Terminada </label> 
+			<label>Sí</label><input type="checkbox" class=radio name="terminada" />
+			<label>No</label><input type="checkbox" class=radio name="terminada" />
+		</p>
+		
+		<p>
+			<label>Ganada </label> 
+			<label>Sí</label><input type="checkbox" class=radio name="ganada" />
+			<label>No</label><input type="checkbox" class=radio name="ganada" />
+		</p>
+		<p>
+			<label>Fecha </label><input type="date" name="fecha" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>DELETE - /jugadores/delete</h3>
+
+	<form id="form-jugadores-delete" method="DELETE"
+		action="http://localhost:8080/Autocartas/rest/jugadores/delete">
+		<p>
+			<label>Id </label><input type="number" name="id" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+</body>
+</html>

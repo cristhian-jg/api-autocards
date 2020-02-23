@@ -19,6 +19,9 @@ import com.crisgon.apirest.controller.ControladorCarta;
 import com.crisgon.apirest.model.Carta;
 import com.google.gson.Gson;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * Created by @cristhian-jg on 13/02/2020
  *
@@ -29,6 +32,7 @@ import com.google.gson.Gson;
  */
 
 @Path("/cartas")
+@Api(value = "REST service para cartas")
 public class CartasAPI {
 
 	private static final String TAG = "CartasAPI";
@@ -44,6 +48,7 @@ public class CartasAPI {
 	 * @return respuesta positiva con la carta creada en JSON.
 	 * @return respuesta negativa si no ha creado la estadistica.
 	 */
+	@ApiOperation("Crea un nuevo paciente")
 	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -81,6 +86,7 @@ public class CartasAPI {
 	 * @return respuesta positiva con el arreglo de todas las cartas disponibles en
 	 *         JSON.
 	 */
+	@ApiOperation("Obten la lista de cartas")
 	@Path("/getcards")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -102,6 +108,7 @@ public class CartasAPI {
 	 * @param identificador
 	 * @return una carta en formato JSON.
 	 */
+	@ApiOperation("Obten una carta")
 	@Path("/getcard")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -130,6 +137,7 @@ public class CartasAPI {
 	 * @return respuesta positiva si ha eliminado la carta.
 	 * @return respuesta negativa si no ha eliminado la carta.
 	 */
+	@ApiOperation("Borra una carta")
 	@Path("/delete")
 	@DELETE
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)

@@ -2,14 +2,309 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Autocartas - Juego de cartas con coches  </title>
+<title>Autocartas - Juego de cartas con coches</title>
 
 <style type="text/css">
- h1 { color: black; font-family: Verdana; }
+h1 {
+	color: black;
+	font-family: Verdana;
+}
+
+div {
+	width: 200px;
+}
+
+h2 {
+	font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+	border-bottom: 1px solid #ccc;
+}
+
+li:last-child {
+	border: none;
+}
+
+li a {
+	text-decoration: none;
+	color: #000;
+	display: block;
+	width: 200px;
+	-webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+	-moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+	-o-transition: font-size 0.3s ease, background-color 0.3s ease;
+	-ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+	transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+
+li a:hover {
+	font-size: 30px;
+	background: #f6f6f6;
+}
 </style>
 
 </head>
-	<body>	
-		<h1>Autocartas</h1>
-	</body>
+<body>
+
+	<h1>Autocartas</h1>
+	
+	<IMG SRC="Autocartas-logo.PNG">
+	
+	<h3>LISTA DE ENDPOINTS CRUD</h3>
+	<div>
+
+		<ul>
+			<li><a href="cartas.html">CARTAS</a></li>
+			<li><a href="jugadores.html">JUGADORES</a></li>
+			<li><a href="partidas.html">PARTIDAS</a></li>
+			<li><a href="estadisticas.html">ESTADISTICAS</a></li>
+		</ul>
+	</div>
+
+	<h3>LISTA DE ENDPOINTS JUEGO</h3>
+
+	<h3>POST - /init/login</h3>
+
+
+	<form id="form-init-login" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/login">
+		<p>
+			<label>Nickname </label><input type="text" name="nickname"
+				placeholder="Nickname" />
+		</p>
+		<p>
+			<label>Password </label><input type="password" name="password"
+				placeholder="Contraseña" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>POST - /init/register</h3>
+
+	<form id="form-init-register" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/register">
+		<p>
+			<label>Nickname </label><input type="text" name="nickname"
+				placeholder="Nickname" />
+		</p>
+		<p>
+			<label>Nombre </label><input type="text" name="nombre"
+				placeholder="Nombre" />
+		</p>
+		<p>
+			<label>Password </label><input type="password" name="password"
+				placeholder="Contraseña" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>POST - /init/newgame</h3>
+
+	<form id="form-init-newgame" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/newgame">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>POST - /init/reset</h3>
+
+	<form id="form-init-reset" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/reset">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>POST - /init/raffle</h3>
+
+	<p>Reparte las cartas y decide quien empieza primero.</p>
+
+	<form id="form-init-raffle" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/raffle">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+	<h3>POST - /init/playcard</h3>
+
+	<p>Defina la jugada que hace el jugador.</p>
+
+	<form id="form-init-playcard" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/playcard">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+
+		<p>
+			<label>idCard </label><input type="text" name="idCard"
+				placeholder="idCarta" />
+		<p />
+		<p>
+			<label>Caracteristica </label> <select name="feature">
+				<option value="MOTOR">MOTOR</option>
+				<option value="POTENCIA">POTENCIA</option>
+				<option value="VELOCIDAD">VELOCIDAD</option>
+				<option value="MOTOR">CILINDROS</option>
+				<option value="POTENCIA">REVOLUCIONES</option>
+				<option value="VELOCIDAD">CONSUMO</option>
+			</select>
+		<p />
+
+		<p>
+			<label>Mano </label><input type="number" name="hand"
+				placeholder="numero mano" />
+		<p />
+
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+<h3>POST - /init/ready</h3>
+
+	<p>La carta hace su jugada.</p>
+
+	<form id="form-init-playcard" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/ready">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+		<p>
+			<label>Caracteristica </label> <select name="feature">
+				<option value="MOTOR">MOTOR</option>
+				<option value="POTENCIA">POTENCIA</option>
+				<option value="VELOCIDAD">VELOCIDAD</option>
+				<option value="MOTOR">CILINDROS</option>
+				<option value="POTENCIA">REVOLUCIONES</option>
+				<option value="VELOCIDAD">CONSUMO</option>
+			</select>
+		<p />
+		
+		<p>
+			<label>Mano </label><input type="number" name="hand"
+				placeholder="numero mano" />
+		<p />
+
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+<h3>POST - /init/check</h3>
+
+	<p>Comprueba la carta ganadora.</p>
+
+	<form id="form-init-playcard" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/check">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+
+		<p>
+			<label>idCard Player </label><input type="text" name="idCartaJugador"
+				placeholder="idCarta" />
+		<p />
+		<p>
+			<label>idCard CPU </label><input type="text" name="idCartaCPU"
+				placeholder="idCarta" />
+		<p />
+		<p>
+			<label>Caracteristica </label> <select name="feature">
+				<option value="MOTOR">MOTOR</option>
+				<option value="POTENCIA">POTENCIA</option>
+				<option value="VELOCIDAD">VELOCIDAD</option>
+				<option value="MOTOR">CILINDROS</option>
+				<option value="POTENCIA">REVOLUCIONES</option>
+				<option value="VELOCIDAD">CONSUMO</option>
+			</select>
+		<p />
+
+		<p>
+			<label>Mano </label><input type="number" name="hand"
+				placeholder="numero mano" />
+		<p />
+
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+<h3>POST - /init/getstats</h3>
+
+	<p>Obtiene los resultados de la partida.</p>
+
+	<form id="form-init-gestast" method="POST"
+		action="http://localhost:8080/Autocartas/rest/init/getstats">
+		<p>
+			<label>idSession </label><input type="text" name="idSession"
+				placeholder="Nickname" />
+		</p>
+
+		<p>
+			<label>idGame </label><input type="text" name="idGame"
+				placeholder="IdJuego" />
+		<p />
+
+		<p>
+			<input type="submit" value="Enviar">
+		</p>
+	</form>
+
+</body>
 </html>

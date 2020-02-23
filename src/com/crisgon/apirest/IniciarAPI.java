@@ -190,7 +190,7 @@ public class IniciarAPI {
 		partida = ControladorPartidas.getPartida(idGame);
 		partida.setTerminada(true);
 
-		ControladorPartidas.updatePartida(partida);
+		ControladorPartidas.updatePartida(partida.getId(), partida.getJugador(), partida.isGanada(), partida.isTerminada(), partida.getFecha());
 		json = new Gson().toJson(partida);
 
 		return Response.status(Response.Status.OK).entity(json).build();
