@@ -48,3 +48,5 @@ Una vez hecha mi investigación ya tenía mucho más claro como abarcar los endp
 
 En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las rutas que tendrían, y el tipo que eran, y si consumirian recursos o los producirian, en principio todo esto que había hecho estaba bien, pero claro todos mis metodos no devolvían nada estaban a void, por lo que tuve que ayudarme un poco del ejercicio de las apirest que estuvimos haciendo en acceso a datos, en este vi que soliamos devolver un strings, pero recordé que habiamos visto las Response, que eran respuestas http por lo que elegí la opción de devolver Response, lo cual se me confirmo despues que era lo correcto.
 
+Una vez aprendí y a hacer las conversiones a JSON con GSON y devolverlos en el response todo iba más fluido. Por lo que empecé tambien a hacer los endpoints correspondientes al juego, por lo menos el esqueleto, y para esto me ayude de la grafica que aparece en el PDF en el que se comunica el cliente con el servidor.
+
