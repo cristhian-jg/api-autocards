@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import com.crisgon.apirest.model.Jugador;
 
 /**
- * Created by @cristhian-jg on 14/02/2020
- *
+ * Clase controladora que se encarga de las operaciones deseadas con la tabla
+ * Jugadores
+ * 
  * @author Cristhian González.
+ *
  * 
  */
 
@@ -33,7 +35,7 @@ public class ControladorJugador {
 		jugadores = new ArrayList<>();
 
 		String query = "SELECT * FROM jugadores";
-		
+
 		try {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
@@ -43,7 +45,7 @@ public class ControladorJugador {
 				nickname = resultSet.getString("nickname");
 				nombre = resultSet.getString("nombre");
 				password = resultSet.getString("password");
-				
+
 				jugador = new Jugador(nickname, nombre, password);
 
 				jugadores.add(jugador);
@@ -90,14 +92,13 @@ public class ControladorJugador {
 	}
 
 	public static boolean addJugador(String nickname, String nombre, String password) {
-		
+
 		Boolean validada = false;
 		String query;
-		
+
 		if (nickname != null) {
-			query = "INSERT INTO jugadores (nickname, nombre, password) VALUES("
-					+ "'" + nickname + "'," + "'" + nombre + "'," + "'"
-					+ password + "')";
+			query = "INSERT INTO jugadores (nickname, nombre, password) VALUES(" + "'" + nickname + "'," + "'" + nombre
+					+ "'," + "'" + password + "')";
 			try {
 				Statement statement = connection.createStatement();
 				statement.executeUpdate(query);
@@ -107,7 +108,7 @@ public class ControladorJugador {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return validada;
 	}
 

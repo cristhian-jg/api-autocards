@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * Created by @cristhian-jg on 14/02/2020
- *
+ * 
+ * Clase modelo que representa la tabla de cartas.
+ * 
  * @author Cristhian González.
  * 
  */

@@ -23,18 +23,19 @@ import com.crisgon.apirest.controller.JuegoOperations;
 import com.crisgon.apirest.controller.ControladorJugador;
 import com.crisgon.apirest.controller.ControladorPartidas;
 import com.crisgon.apirest.libreria.RandomNoRepeat;
+import com.crisgon.apirest.model.Reparto;
+import com.crisgon.apirest.model.CPUSelection;
 import com.crisgon.apirest.model.Carta;
 import com.crisgon.apirest.model.Estadistica;
+import com.crisgon.apirest.model.Jugada;
 import com.crisgon.apirest.model.Jugador;
 import com.crisgon.apirest.model.Partida;
-import com.crisgon.apirest.model.mecanica.HandResult;
-import com.crisgon.apirest.model.mecanica.Juego;
-import com.crisgon.apirest.model.mecanica.Jugada;
 import com.google.gson.Gson;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
- *
+ * 
+ * Clase que contiene los endpoints que controlan el juego.
+ * 
  * @author Cristhian González.
  * 
  */
@@ -43,6 +44,8 @@ import com.google.gson.Gson;
 public class IniciarAPI {
 
 	private static final String TAG = "IniciarAPI";
+
+	private static JuegoOperations operaciones = new JuegoOperations();
 
 	/**
 	 * Verifica que el usuario/jugador existe en la base de datos y que la
@@ -190,7 +193,8 @@ public class IniciarAPI {
 		partida = ControladorPartidas.getPartida(idGame);
 		partida.setTerminada(true);
 
-		ControladorPartidas.updatePartida(partida.getId(), partida.getJugador(), partida.isGanada(), partida.isTerminada(), partida.getFecha());
+		ControladorPartidas.updatePartida(partida.getId(), partida.getJugador(), partida.isGanada(),
+				partida.isTerminada(), partida.getFecha());
 		json = new Gson().toJson(partida);
 
 		return Response.status(Response.Status.OK).entity(json).build();
@@ -213,11 +217,6 @@ public class IniciarAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response raffle(@FormParam("idSession") String idSession, @FormParam("idGame") int idGame) {
 
-		Juego juego;
-
-		System.out.print("sesion " + idSession);
-		System.out.print("game " + idGame);
-
 		ArrayList<Carta> cartas = ControladorCarta.getAll();
 		ArrayList<Carta> cartasJugador;
 		ArrayList<Carta> cartasMaquina;
@@ -228,23 +227,18 @@ public class IniciarAPI {
 		int aleatorio;
 		int numMano;
 
-		cartasJugador = new ArrayList<>();
-		cartasMaquina = new ArrayList<>();
+		operaciones.raffle(cartas);
 
-		JuegoOperations.repartir(cartas);
+		cartasJugador = operaciones.getCartasJugador();
+		cartasMaquina = operaciones.getCartasMaquina();
 
-		random = new Random();
-		aleatorio = random.nextInt(1);
+		operaciones.setHand(1);
 
-		cartasJugador = JuegoOperations.getCartasJugador();
-		cartasMaquina = JuegoOperations.getCartasMaquina();
+		Reparto barajas = new Reparto(cartasJugador, cartasMaquina);
 
-		numMano = 1;
+		json = new Gson().toJson(barajas);
 
-		juego = new Juego(idGame, cartasJugador, cartasMaquina, numMano);
-		json = new Gson().toJson(juego);
-
-		switch (aleatorio) {
+		switch (operaciones.sortear()) {
 		case 0:
 			// Si elige el jugador respuesta 200.
 			return Response.status(Response.Status.OK).entity(json).build();
@@ -256,197 +250,73 @@ public class IniciarAPI {
 		return Response.status(400).build();
 	}
 
+	/**
+	 * Se encarga de recibir la jugada del jugador, decidir la jugada de la CPU y
+	 * comprobar los resultados.
+	 * 
+	 * @param idSession
+	 * @param idGame
+	 * @param idCard
+	 * @param feature
+	 * @param hand
+	 * @return Devuelve el resultado de la jugada
+	 */
 	@Path("/playcard")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response playCard(@FormParam("idSession") String idSession, @FormParam("idGame") int idGame,
-			@FormParam("idCard") String idCard, @FormParam("feature") Caracteristica feature,
-			@FormParam("hand") int hand) {
+			@FormParam("idCard") String idCard, @FormParam("feature") String feature, @FormParam("hand") int hand) {
+		HandResult result = new HandResult();
 
-		ArrayList<Carta> cartasJugador = JuegoOperations.getCartasJugador();
-
-		Jugada jugada = new Jugada(idSession, idGame, idCard, feature, hand);
-		String json = new Gson().toJson(jugada);
-
-		for (int i = 0; i < cartasJugador.size(); i++) {
-			if (cartasJugador.get(i).getIdentificador().equals(idCard)) {
-				cartasJugador.remove(i);
-			}
+		// Si se completan las manos lo vuelve a poner a 0
+		if (hand > 6) {
+			result.setMarcadorCPU(0);
+			result.setMarcadorJugador(0);
 		}
 
-		return Response.status(Response.Status.OK).entity(json).build();
+		// Hace que la CPU elija una carta de sus restantes
+		Carta carta = operaciones.cpuEligeCarta();
+
+		// Se juegan las cartas y devuelve un resultado
+		result = operaciones.playCard(idSession, idGame, idCard, feature, hand);
+		result.setCartaSeleccionadaCPU(carta);
+		operaciones.isTurnoJugador(true);
+
+		return Response.status(Response.Status.OK).entity(result).build();
 	}
 
+	/**
+	 * Indica que es el turno de la CPU y tiene que elegir una caracteristica.
+	 * 
+	 * @param idSession
+	 * @param idGame
+	 * @return Respuesta positiva
+	 */
 	@Path("/ready")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ready(@FormParam("idSession") String idSession, @FormParam("idGame") int idGame,
-			@FormParam("feature") Caracteristica caracteristica, @FormParam("hand") int hand) {
+	public Response ready(@FormParam("idSession") String idSession, @FormParam("idGame") int idGame) {
 
-		ArrayList<Carta> cartasMaquina;
-		ArrayList<Integer> seleccionesAleatorias;
+		System.out.print("ready");
 
-		Random random;
-		Jugada jugada;
-		String json;
+		operaciones.isTurnoJugador(false);
+		String caracteristicaSeleccionada = operaciones.featureSelect();
 
-		int cartaAleatoria;
-		int caracteristicaAleatoria;
-		Carta carta;
-		Caracteristica feature = null;
+		CPUSelection selection = new CPUSelection(caracteristicaSeleccionada);
 
-		String idCard;
+		String json = new Gson().toJson(selection);
 
-		cartasMaquina = JuegoOperations.getCartasMaquina();
-
-		seleccionesAleatorias = RandomNoRepeat.randomNoRepeat(6, cartasMaquina.size());
-		int posCartaAleatoria = seleccionesAleatorias.get(cartasMaquina.size()-1);
-
-		System.out.println("\n"+ seleccionesAleatorias.toString());
-		
-		carta = cartasMaquina.get(posCartaAleatoria);
-		idCard = carta.getIdentificador();
-
-		if (caracteristica == null) {
-			random = new Random(5);
-			caracteristicaAleatoria = random.nextInt();
-
-			switch (caracteristicaAleatoria) {
-			case 0:
-				feature = Caracteristica.MOTOR;
-				break;
-			case 1:
-				feature = Caracteristica.CILINDROS;
-				break;
-			case 2:
-				feature = Caracteristica.CONSUMO;
-				break;
-			case 3:
-				feature = Caracteristica.POTENCIA;
-				break;
-			case 4:
-				feature = Caracteristica.REVOLUCIONES;
-				break;
-			case 5:
-				feature = Caracteristica.VELOCIDAD;
-				break;
-			}
-
-			jugada = new Jugada(idSession, idGame, idCard, feature, hand);
-
-			json = new Gson().toJson(jugada);
-
-			cartasMaquina.remove(posCartaAleatoria);
-
-			return Response.status(Response.Status.OK).entity(json).build();
-		} else {
-			jugada = new Jugada(idSession, idGame, idCard, null, hand);
-
-			json = new Gson().toJson(jugada);
-
-			cartasMaquina.remove(posCartaAleatoria);
-						
-			return Response.status(202).entity(json).build();
-		}
-
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	@Path("/check")
-	@POST
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response check(@FormParam("idGame") int idGame, @FormParam("idSession") String idSession,
-			@FormParam("idCartaJugador") String idCartaJugador, @FormParam("idCartaCPU") String idCartaCPU,
-			@FormParam("feature") Caracteristica feature) {
-
-		Carta cartaJugador = ControladorCarta.getCarta(idCartaJugador);
-		Carta cartaCPU = ControladorCarta.getCarta(idCartaCPU);
-
-		switch (feature) {
-		case MOTOR:
-			if (cartaJugador.getMotor() > cartaCPU.getMotor()) {
-
-				String json = new Gson().toJson(cartaJugador);
-
-				HandResult.aumentarMarcadorJugador();
-
-				return Response.status(Response.Status.OK).entity(json).build();
-
-			} else {
-				String json = new Gson().toJson(cartaCPU);
-				HandResult.aumentarMarcadorCPU();
-
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-		case POTENCIA:
-			if (cartaJugador.getPotencia() > cartaCPU.getPotencia()) {
-
-				String json = new Gson().toJson(cartaJugador);
-				HandResult.aumentarMarcadorJugador();
-				return Response.status(Response.Status.OK).entity(json).build();
-
-			} else {
-
-				String json = new Gson().toJson(cartaCPU);
-				HandResult.aumentarMarcadorCPU();
-				return Response.status(Response.Status.OK).entity(json).build();
-
-			}
-		case VELOCIDAD:
-
-			if (cartaJugador.getVelocidad() > cartaCPU.getVelocidad()) {
-				HandResult.aumentarMarcadorJugador();
-				String json = new Gson().toJson(cartaJugador);
-				return Response.status(Response.Status.OK).entity(json).build();
-			} else {
-				HandResult.aumentarMarcadorCPU();
-				String json = new Gson().toJson(cartaCPU);
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-
-		case CILINDROS:
-
-			if (cartaJugador.getCilindros() > cartaCPU.getCilindros()) {
-				String json = new Gson().toJson(cartaJugador);
-				HandResult.aumentarMarcadorJugador();
-				return Response.status(Response.Status.OK).entity(json).build();
-			} else {
-				HandResult.aumentarMarcadorCPU();
-				String json = new Gson().toJson(cartaCPU);
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-
-		case REVOLUCIONES:
-
-			if (cartaJugador.getRevoluciones() < cartaCPU.getRevoluciones()) {
-				HandResult.aumentarMarcadorJugador();
-
-				String json = new Gson().toJson(cartaJugador);
-				return Response.status(Response.Status.OK).entity(json).build();
-			} else {
-				HandResult.aumentarMarcadorCPU();
-				String json = new Gson().toJson(cartaCPU);
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-
-		case CONSUMO:
-
-			if (cartaJugador.getConsumo() < cartaCPU.getConsumo()) {
-				HandResult.aumentarMarcadorJugador();
-				String json = new Gson().toJson(cartaJugador);
-				return Response.status(Response.Status.OK).entity(json).build();
-			} else {
-				String json = new Gson().toJson(cartaCPU);
-				HandResult.aumentarMarcadorCPU();
-				return Response.status(Response.Status.OK).entity(json).build();
-			}
-		}
-
-		return Response.status(400).entity("Something went wrong...").build();
-	}
-
+	/**
+	 * 
+	 * @param idSession
+	 * @param idGame
+	 * @return Devuelve las estadisticas de la ultima partida.
+	 */
 	@Path("/getstats")
 	@GET
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)

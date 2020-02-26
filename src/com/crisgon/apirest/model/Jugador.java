@@ -3,8 +3,8 @@ package com.crisgon.apirest.model;
 import java.io.Serializable;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
- *
+ * Clase modelo jugador que representa la tabla Jugador. 
+ * 
  * @author Cristhian González.
  * 
  */

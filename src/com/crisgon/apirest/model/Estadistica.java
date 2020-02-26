@@ -1,5 +1,12 @@
 package com.crisgon.apirest.model;
 
+/**
+ * Clase modelo que representa la tabla Estadistica.
+ * 
+ * @author Cristhian González.
+ *
+ */
+
 public class Estadistica {
 
 	private int id;
@@ -8,12 +15,20 @@ public class Estadistica {
 	private int ganadas;
 	private int perdidas;
 	private int empatadas;
-	
+
 	public Estadistica() {
 	}
 
 	public Estadistica(int id, String jugador, int partida, int ganadas, int perdidas, int empatadas) {
 		this.id = id;
+		this.jugador = jugador;
+		this.partida = partida;
+		this.ganadas = ganadas;
+		this.perdidas = perdidas;
+		this.empatadas = empatadas;
+	}
+
+	public Estadistica(String jugador, int partida, int ganadas, int perdidas, int empatadas) {
 		this.jugador = jugador;
 		this.partida = partida;
 		this.ganadas = ganadas;
@@ -74,5 +89,5 @@ public class Estadistica {
 		return "Estadistica [id=" + id + ", jugador=" + jugador + ", partida=" + partida + ", ganadas=" + ganadas
 				+ ", perdidas=" + perdidas + ", empatadas=" + empatadas + "]";
 	}
-	
+
 }

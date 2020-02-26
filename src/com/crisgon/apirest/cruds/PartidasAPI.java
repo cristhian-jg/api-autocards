@@ -23,12 +23,12 @@ import java.sql.Date;
 import com.google.gson.Gson;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
- *
+ * 
+ * Clase que contiene los endpoints para crear, leer, actualizar y eliminar
+ * partidas de la base de datos.
+ * 
  * @author Cristhian González.
  * 
- *         Clase que contiene los endpoints para crear, leer, actualizar y
- *         eliminar partidas de la base de datos.
  */
 
 @Path("/partidas")
@@ -90,9 +90,17 @@ public class PartidasAPI {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	//TODO MODIFICAR METODO PARA ACTUALIZAR PARTIDA
-	/** Endpoint que actualiza una partida en la base de datos */
-	@Path("update/{id}")
+	/**
+	 * /** [ENDPOINT] Permite actualizar una estadistica
+	 * 
+	 * @param id
+	 * @param jugador
+	 * @param ganada
+	 * @param terminada
+	 * @param fecha
+	 * @return
+	 */
+	@Path("/update")
 	@PUT
 	@Produces(MediaType.APPLICATION_FORM_URLENCODED)
 	@Consumes(MediaType.APPLICATION_JSON)
