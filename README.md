@@ -12,6 +12,12 @@ En esta memoria de trabajo/explicativa resaltaré los puntos más importantes de
 
 ### 2. DISEÑANDO LA BASE DE DATOS 
 
+Lo primero que necesitaba para empezar a trabajar era una base de datos sobre la cual
+operar por lo que procedi a instalarme SQLWorkbench para crear mi base de datos
+autocartas, que esta formadas por 4 tablas cartas, jugadores, partidas, estadisticas en el
+cual la tablas estadisticas y jugadores tienen relacion con las tablas jugadores y
+partidas, dejo un mockup.
+
 ### 3. CONSTRUYENDO EL SERVIDOR
 
 Al iniciar con el proyecto con Maven tuve que agregar las correspondientes dependecias, y cambiar algunos valores de configuración del archivo web.xml, es algo que hemos visto en clase y no veo necesario resaltar mucho aquí. En un principio no tenía bastante claro por donde empezar, esto de las API era algo nuevo y tenía mis dudas así que el primer día de proyecto lo dediqué a investigar sobre como estaban estructuradas las api, cual era el metodo de trabajo, para que servian exactamente, en esta primera investigación ya me hice un poco a la idea de lo que podía ser el proyecto, ya sabía por donde empezar así que lo primero que hice fue lo más facil y simple que se me ocurrió y se pedía hacer en el trabajo las operaciones CRUD, así no perdía más tiempo mientras pensaba en lo demás, además es algo que llevo haciendo durante todo el curso y se podría decir que lo tenía más que asimilado.   
