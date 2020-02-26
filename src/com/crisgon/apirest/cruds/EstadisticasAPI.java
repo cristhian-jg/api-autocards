@@ -21,12 +21,11 @@ import com.crisgon.apirest.model.Estadistica;
 import com.google.gson.Gson;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
+ * Clase que contiene los endpoints para crear, leer, actualizar y eliminar
+ * estadisticas de la base de datos.
  *
  * @author Cristhian González.
  * 
- *         Clase que contiene los endpoints para crear, leer, actualizar y
- *         eliminar estadisticas de la base de datos.
  */
 
 @Path("/estadisticas")
@@ -44,16 +43,16 @@ public class EstadisticasAPI {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doCreate(@FormParam("id") int id, @FormParam("jugador") String jugador,
-			@FormParam("partida") int partida, @FormParam("ganadas") int ganadas, @FormParam("perdidas") int perdidas,
+	public Response doCreate(@FormParam("jugador") String jugador, @FormParam("partida") int partida,
+			@FormParam("ganadas") int ganadas, @FormParam("perdidas") int perdidas,
 			@FormParam("empatadas") int empatadas) {
 
 		Estadistica estadistica;
 		String json;
 
-		if (ControladorEstadisticas.addEstadistica(id, jugador, partida, ganadas, perdidas, empatadas)) {
+		if (ControladorEstadisticas.addEstadistica(jugador, partida, ganadas, perdidas, empatadas)) {
 
-			estadistica = new Estadistica(id, jugador, partida, ganadas, perdidas, empatadas);
+			estadistica = new Estadistica(jugador, partida, ganadas, perdidas, empatadas);
 
 			json = new Gson().toJson(estadistica);
 
@@ -87,10 +86,35 @@ public class EstadisticasAPI {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	// METODO PARA ACTUALIZAR UNA ESTADISTICA
+	/**
+	 * [ENDPOINT] Permite actualizar una estadistica de la base de datos.
+	 * 
+	 * @param id
+	 * @param jugador
+	 * @param partida
+	 * @param ganadas
+	 * @param perdidas
+	 * @param empatadas
+	 * @return
+	 */
+	@Path("/update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public void doUpdate() {
+	public Response doUpdate(@FormParam("id") int id, @FormParam("jugador") String jugador,
+			@FormParam("partida") int partida, @FormParam("ganadas") int ganadas, @FormParam("perdidas") int perdidas,
+			@FormParam("empatadas") int empatadas) {
+		String json;
+
+		try {
+			ControladorEstadisticas.updateEstadistica(id, jugador, partida, ganadas, perdidas, empatadas);
+
+			json = new Gson().toJson(ControladorEstadisticas.getEstadistica(id));
+
+			return Response.status(Response.Status.OK).entity(json).build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.SEE_OTHER).entity("Update failed." + e.toString()).build();
+		}
 	}
 
 	/**

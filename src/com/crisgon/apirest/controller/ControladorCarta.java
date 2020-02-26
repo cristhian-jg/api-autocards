@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import com.crisgon.apirest.model.Carta;
 
 /**
- * Created by @cristhian-jg on 14/02/2020
- *
+ * Clase controladora que se encarga de las operaciones deseadas con la tabla
+ * Carta.
+ * 
  * @author Cristhian González.
+ *
  * 
  */
 
 public class ControladorCarta {
 	private static Connection connection = MySQLConnector.getConnection();
 
-	/** 
+	/**
 	 * 
 	 * @return
 	 */
@@ -139,6 +141,30 @@ public class ControladorCarta {
 		}
 
 		return estaAgregado;
+	}
+
+	public static boolean updateCarta(String identificador, String marca, String modelo, byte[] foto, int motor,
+			int potencia, int velocidad, int cilindros, int revoluciones, double consumo) {
+
+		Statement statement;
+		String query;
+		boolean validado = false;
+
+		query = "UPDATE partidas SET  marca = " + marca + ", modelo = " + modelo + ", " + "foto = " + foto
+				+ " , motor = " + motor + ", potencia = " + potencia + ", " + "velocidad = " + velocidad
+				+ ", cilindros = " + cilindros + ", revoluciones = " + revoluciones + ", consumo = " + consumo
+				+ " WHERE identificador = " + identificador;
+		try {
+			statement = connection.createStatement();
+
+			statement.executeUpdate(query.toString());
+			validado = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			validado = false;
+		}
+
+		return validado;
 	}
 
 	public static boolean deleteCarta(String identificador) {

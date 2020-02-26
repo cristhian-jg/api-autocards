@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/** 
+ * Conector necesario para conectarse a la base de datos.
+ * @author crist
+ *
+ */
 public class MySQLConnector {
 
 	public static Connection getConnection() {

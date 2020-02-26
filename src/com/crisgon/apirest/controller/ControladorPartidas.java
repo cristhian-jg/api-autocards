@@ -11,6 +11,15 @@ import java.util.ArrayList;
 import com.crisgon.apirest.model.Jugador;
 import com.crisgon.apirest.model.Partida;
 
+/**
+ * Clase controladora que se encarga de las operaciones deseadas con la tabla
+ * Partidas.
+ * 
+ * @author Cristhian González.
+ *
+ * 
+ */
+
 public class ControladorPartidas {
 
 	private static Connection connection = MySQLConnector.getConnection();
@@ -92,13 +101,11 @@ public class ControladorPartidas {
 
 	}
 
-	
 	public static boolean addPartida(int id, String jugador, boolean ganada, boolean terminada, Date fecha) {
 		boolean validado = false;
 		if (id != 0) {
-			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + id
-					+ ",'" + jugador + "', " + ganada + ", " + terminada + ", '"
-					+ fecha + "')";
+			String query = "INSERT INTO partidas (id, jugador, ganada, terminada, fecha) VALUES(" + id + ",'" + jugador
+					+ "', " + ganada + ", " + terminada + ", '" + fecha + "')";
 
 			System.out.println(query);
 			try {
@@ -130,9 +137,9 @@ public class ControladorPartidas {
 			query.append(" WHERE id = " + id);
 			try {
 				statement = connection.createStatement();
-				
+
 				System.out.println(query);
-				
+
 				statement.executeUpdate(query.toString());
 				validado = true;
 			} catch (SQLException e) {

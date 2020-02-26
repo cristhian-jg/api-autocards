@@ -22,12 +22,11 @@ import com.crisgon.apirest.model.Jugador;
 import com.google.gson.Gson;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
+ * Clase que contiene los endpoints para crear, leer, actualizar y
+ *         eliminar jugadores de la base de datos.
  *
  * @author Cristhian González.
- * 
- *         Clase que contiene los endpoints para crear, leer, actualizar y
- *         eliminar jugadores de la base de datos.
+ *  
  */
 
 @Path("/jugadores")
@@ -89,8 +88,8 @@ public class JugadoresAPI {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	// TODO REHACER METODO PARA ACTUALIZAR JUGADOR.
 	/**
+	 * Permite actualizar un jugador.
 	 * 
 	 * @param jugador
 	 * @param nickname

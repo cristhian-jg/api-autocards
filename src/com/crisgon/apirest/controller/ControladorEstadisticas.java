@@ -7,6 +7,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import com.crisgon.apirest.model.Estadistica;
 
+/**
+ * Clase controladora que se encarga de las operaciones deseadas con la tabla
+ * Estadisticas.
+ * 
+ * @author Cristhian González.
+ *
+ * 
+ */
+
 public class ControladorEstadisticas {
 
 	private static Connection connection = MySQLConnector.getConnection();
@@ -43,7 +52,7 @@ public class ControladorEstadisticas {
 				ganadas = resultSet.getInt("ganadas");
 				perdidas = resultSet.getInt("perdidas");
 				empatadas = resultSet.getInt("empatadas");
-				
+
 				estadistica = new Estadistica(id, jugador, partida, ganadas, perdidas, empatadas);
 
 				estadisticas.add(estadistica);
@@ -55,7 +64,7 @@ public class ControladorEstadisticas {
 
 		return estadisticas;
 	}
-	
+
 	public static Estadistica getEstadistica(int id) {
 		Estadistica estadistica = null;
 		Statement statement;
@@ -66,7 +75,7 @@ public class ControladorEstadisticas {
 		int ganadas;
 		int perdidas;
 		int empatadas;
-		
+
 		String query = "SELECT * FROM estadisticas WHERE id = '" + id + "'";
 
 		try {
@@ -90,33 +99,54 @@ public class ControladorEstadisticas {
 
 		return estadistica;
 	}
-	
-	public static boolean addEstadistica(int id, String jugador, int partida, int ganadas, int perdidas, int empatadas) {
-		
+
+	public static boolean addEstadistica(String jugador, int partida, int ganadas, int perdidas, int empatadas) {
+
 		Boolean estaAgregado = false;
 		Statement statement;
 		String sql;
 
-		if (id != 0) {
-			sql = "INSERT INTO estadisticas (id, jugador, partida, ganadas, perdidas, empatadas) VALUES("
-					+ id + ", '" + jugador + "', " + partida + ", " + ganadas
-					+ "," + perdidas + "," + empatadas;
-			
-			try {
-				
-				statement = connection.createStatement();
-				statement.executeUpdate(sql);
-				estaAgregado = true;
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				estaAgregado = false;
-			}
+		sql = "INSERT INTO estadisticas (jugador, partida, ganadas, perdidas, empatadas) VALUES('" + jugador + "', "
+				+ partida + ", " + ganadas + "," + perdidas + "," + empatadas + ")";
+
+		System.out.print(sql);
+
+		try {
+
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+			estaAgregado = true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			estaAgregado = false;
 		}
-		
+
 		return estaAgregado;
 	}
-	
+
+	public static boolean updateEstadistica(int id, String jugador, int partida, int ganadas, int perdidas,
+			int empatadas) {
+
+		Statement statement;
+		String query;
+		boolean validado = false;
+
+		query = "UPDATE partidas SET  jugador '= " + jugador + "', partida = " + partida + ", " + "ganadas = " + ganadas
+				+ " , perdidas = " + perdidas + ", empatadas = " + empatadas + " WHERE id = " + id;
+		try {
+			statement = connection.createStatement();
+
+			statement.executeUpdate(query.toString());
+			validado = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			validado = false;
+		}
+
+		return validado;
+	}
+
 	public static boolean deteleEstadistica(int id) {
 		Statement statement;
 		boolean validado = false;

@@ -23,12 +23,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Created by @cristhian-jg on 13/02/2020
+ *  Clase que contiene los endpoints para crear, leer, actualizar y
+ *         eliminar cartas de la base de datos.
  *
  * @author Cristhian González.
  * 
- *         Clase que contiene los endpoints para crear, leer, actualizar y
- *         eliminar cartas de la base de datos.
+ *        
  */
 
 @Path("/cartas")
@@ -48,7 +48,6 @@ public class CartasAPI {
 	 * @return respuesta positiva con la carta creada en JSON.
 	 * @return respuesta negativa si no ha creado la estadistica.
 	 */
-	@ApiOperation("Crea un nuevo paciente")
 	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -123,10 +122,39 @@ public class CartasAPI {
 		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
-	// TODO METODO PARA ACTUALIZAR UNA CARTA.
+	/**
+	 * [ENDPOINT] Permite actualizar una carta.
+	 * @param identificador
+	 * @param marca
+	 * @param modelo
+	 * @param motor
+	 * @param potencia
+	 * @param velocidad
+	 * @param cilindros
+	 * @param revoluciones
+	 * @param consumo
+	 * @return
+	 */
+	@Path("/update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public void doUpdate() {
+	public Response doUpdate(@FormParam("identificador") String identificador, @FormParam("marca") String marca,
+			@FormParam("modelo") String modelo, @FormParam("motor") int motor, @FormParam("potencia") int potencia,
+			@FormParam("velocidad") int velocidad, @FormParam("cilindros") int cilindros,
+			@FormParam("revoluciones") int revoluciones, @FormParam("consumo") double consumo) {
+		String json;
+
+		try {
+			ControladorCarta.updateCarta(identificador, marca, modelo, null, motor, potencia, velocidad, cilindros,
+					revoluciones, consumo);
+
+			json = new Gson().toJson(ControladorCarta.getCarta(identificador));
+
+			return Response.status(Response.Status.OK).entity(json).build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.SEE_OTHER).entity(TAG + ": Update failed." + e.toString()).build();
+		}
 	}
 
 	/**
