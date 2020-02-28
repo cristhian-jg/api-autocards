@@ -1,10 +1,26 @@
-## 1. INTRODUCCIÓN.
-## 2. DISEÑANDO LA BASE DE DATOS.
-## 2. CONSTRUYENDO EL SERVIDOR
-## 4. IMPLEMENTANDO LOS ENDPOINTS
-## 5. PRUEBAS DE CONEXIÓN.
-## 6. CREANDO EL JUEGO
-## 7. CONCLUSIÓN.
+# MEMORIA: Autocartas API
+
+
+Modulo: Acceso a Datos y Programación Multimedia  
+
+Alumno: Cristhian González  
+
+Fecha: 24/02/2020  
+
+
+![Cartas](Cartas.jpg)
+
+### [1. INTRODUCCIÓN.](#1-introducción-1)
+### [2. DISEÑANDO LA BASE DE DATOS.](#2-diseñando-la-base-de-datos-1)
+### [3. CONSTRUYENDO EL SERVIDOR](#3-construyendo-el-servidor-1)
+### [4. IMPLEMENTANDO LOS ENDPOINTS](#4-implementando-los-endpoints-1)
+### [5. PRUEBAS DE CONEXIÓN.](#5-pruebas-de-conexión-1)
+### [6. CREANDO EL JUEGO](#6-creando-el-juego-1)
+### [7. DISEÑANDO EL UI](#7-diseñando-el-ui-1)
+### [8. MONTANDO EL JUEGO](#8-montando-el-juego-1)
+### [9. PREFERENCIAS](#9-preferencias-1)
+### [10. ADMINISTRACIÓN](#10-administración-1)
+### [11. CONCLUSIÓN](#11-conclusión-1)
 
 ### 1. INTRODUCCIÓN
 
@@ -17,6 +33,8 @@ operar por lo que procedi a instalarme SQLWorkbench para crear mi base de datos
 autocartas, que esta formadas por 4 tablas cartas, jugadores, partidas, estadisticas en el
 cual la tablas estadisticas y jugadores tienen relacion con las tablas jugadores y
 partidas, dejo un mockup.
+
+![Mockup](Mockup.png)
 
 ### 3. CONSTRUYENDO EL SERVIDOR
 
@@ -48,7 +66,7 @@ Una vez creada esta clase ya me puse con los controladores los cuales realizaban
 
 Con los metódos ya implementados hice unas pequeñas pruebas para verificar que estaban funcionando y así fue, por lo que ya tenía el CRUD de la aplicación hecho, por lo que me tocaba pasar al siguiente paso, crear los endpoints del servidor web, era algo que aún no tenía muy claro del todo así que simplemente me dedique a montar el esqueleto de los endpoints titulando los metodos, viendo cuales serían los metodos GET SET PUT DELETE, algo que no entendía del todo pero una vez estudiado no me costó tanto. Una vez tuve el esqueleto de los endpoints, completamente vacios, me quede un poco estancado porque no tenía claro el siguiente paso. Así que me puse a investigar nuevamente, que era exactamente un endpoint, su estructura y que debía contener, lo que nos lleva al siguiente apartado.
 
-### 4. IMPLEMENTADO LOS ENDPOINTS
+### 4. IMPLEMENTANDO LOS ENDPOINTS
 
 Una vez hecha mi investigación ya tenía mucho más claro como abarcar los endpoints, en este punto del proyecto empezaba a verlo todo más claro, y apartir de aquí mis días de proyecto empezaron a hacer un poco más productivos. 
 
@@ -62,10 +80,10 @@ En el anterior punto ya tenía el esqueleto de mis endpoints definidos, con las 
 	 * @param identificador
 	 * @return una carta en formato JSON.
 	 */
-	@Path("/getcard")
+	@Path("/getcard/{identificador}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCarta(@QueryParam("identificador") String identificador) {
+	public Response getCarta(@PathParam("identificador") String identificador) {
 		Carta carta;
 		String json;
 		carta = ControladorCarta.getCarta(identificador);
@@ -147,7 +165,9 @@ public class RandomNoRepeat {
    }	
 }
 ```
-
+Esta clase tenía sus pegas como ¿que pasaría si le paso una cantidad de numeros superior en un rango menor? Es decir, generame 5 numeros aleatorios en un rango de 3, no podría hacer eso, tendrían que repetirse dos numeros al menos una vez, pero por el momento esto no suponía ningun problema, ya que sabia que esto podría pasar.
+Volviendo al endpoint de repartir, ahora debía repartir las cartas de todas las cartas que tenía en la base de datos, para ello utilizaba mi clase que genera numeros aleatorios, así que se me ocurrio hacer esta función en otra clase llamada JuegoOperations en el que tiene el metodo repartir(), que lo que hace recorrer el array de numeros random no repetidos asignando las 6 primeras posiciones a el jugador y las 6 ultimas a la máquina. Además este endpoint debía decir quien empezaba eligiendo la caractersitica, esto lo solucioné haciendo un Random en un rango de 0 y 1, si salía 0 empezaba el jugador, por lo que respondía un 200 (OK), en caso de salir 1 empezaba la máquina por lo que respondía 202(ACEPTED), aparte de devolver las cartas del jugador, el id del juego, y las de la máquina, así que tuve que crear otra case modelo donde empaquetar toda esta información para enviarla, la llamé Juego.
+Ahora había llegado al endpoint de playcard, donde el usuario indicaba su jugada o su ataque, para esto tuve que crearme otra clase modelo donde empaquetar toda esta información para así poder enviarla y recibirla mejor, esta clase se llama Jugada, donde se indicar el nickname del jugador (idSession) y el id de la partida (idGame), aparte de la carta, la caracteritica y la mano, para la caracteristica me decidí por crear un enumerado que contenga todas las caracteristicas.
 Esta clase tenía sus pegas como ¿que pasaría si le paso una cantidad de numeros superior en un rango menor? Es decir, generame 5 numeros aleatorios en un rango de 3, no podría hacer eso, tendrían que repetirse dos numeros al menos una vez, pero por el momento esto no suponía ningun problema, ya que sabia que esto podría pasar. 
 
 Volviendo al endpoint de repartir, ahora debía repartir las cartas de todas las cartas que tenía en la base de datos, para ello utilizaba mi clase que genera numeros aleatorios, así que se me ocurrio hacer esta función en otra clase llamada JuegoOperations en el que tiene el metodo repartir(), que lo que hace recorrer el array de numeros random no repetidos asignando las 6 primeras posiciones a el jugador y las 6 ultimas a la máquina. Además este endpoint debía decir quien empezaba eligiendo la caractersitica, esto lo solucioné haciendo un Random en un rango de 0 y 1, si salía 0 empezaba el jugador, por lo que respondía un 200 (OK), en caso de salir 1 empezaba la máquina por lo que respondía 202(ACEPTED), aparte de devolver las cartas del jugador, el id del juego, y las de la máquina, así que tuve que crear otra case modelo donde empaquetar toda esta información para enviarla, la llamé Juego.
@@ -158,6 +178,38 @@ Ahora tocaba implementar el metodo o endpoint ready, algo que me generó mucho c
 
 Para el siguiente endpoint tambien decidí crear otra clase la cual se encarga de manejar el resultado de la partida, esta clase se llama HandResult, la cual aumenta los puntos del jugador o de la maquina, esto lo hace dependiendo de las caracteristicas y las especificaciones de cada carta , por lo que este endpoint se encarga de asignar los puntos correspondientes según la caracteristica. Llegados a este punto la parte de la API estaba casi completada, probablente tendría que hacer algunos ajustes al hacer la implementación en el cliente, pero solo quedaba devolver los resultados o estadisticas de la partida que se ha jugado, por lo que debía hacer una consulta de las estadisticas del juego.
 
-### 7. CONCLUSIÓN
+Ahora tocaba implementar el metodo o endpoint ready, algo que me generó mucho confusión, pero creo que lo que he hecho en este end point puede funcionar, aunque puede que tenga que modificarla en su versión final, este ready indica que el jugador está listo y la cpu puede hacer su jugada, hay veces que el jugador no elige la caracteristica y tiene que hacerlo la máquina, esto lo detecto porque en los parametros tambien se pasa la caracteristica seleccionada, en caso de ser null la máquina procderá a elegir una caracteristica además de elegir la carta que va a tirar, esto de manera aleatoria, para ser posteriormente removida del array ya que es carta la ha tirado.
+Para el siguiente endpoint tambien decidí crear otra clase la cual se encarga de manejar el resultado de la partida, esta clase se llama HandResult, la cual aumenta los puntos del jugador o de la maquina, esto lo hace dependiendo de las caracteristicas y las especificaciones de cada carta , por lo que este endpoint se encarga de asignar los puntos correspondientes según la caracteristica. Llegados a este punto la parte de la API estaba casi completada, probablente tendría que hacer algunos ajustes al hacer la implementación en el cliente, pero solo quedaba devolver los resultados o estadisticas de la partida que se ha jugado, por lo que debía hacer una consulta de las estadisticas del juego.
 
+### 7. DISEÑANDO EL UI
+
+Una vez con  con la API Rest completada me puse a hacer los primeros diseños para la interfaz de usuarios, no quería dedicarle mucho tiempo a la interfaz ya que lo que buscaba al final es que el juego funcionase, si llegaba a conseguirlo considerable problablemente me hubiese currado más la UI. Bueno, empecé construyendo un Login, ya que quería que fuera la primera ventana que vieran los usuarios al encender la aplicación, puse dos EditText y un Button para empezar a hacer las primeras pruebas de conexión con Retrofit con el servidor, esto es algo que he mencionado en la anterior parte, el problema con los PUT y URLENCODED. Empecé diseñando todo mi programa en modo PORTRAIT, es decir vertical, lo cual me gustaba por el momento. El login estaba listo así que tocaba hacer una ventana de registro así que me puse con ello y no tarde mucho en hacerlo ya que dominaba lo suficiente el Retrofit.
+
+Ahora era el turno de hacer la ventana de Inicio del juego, se me ocurrió mostrar las estadisticas de cada jugador que había jugado una partida en una parte de la actividad y por otro lado varios botones, uno para iniciar la partida y otro para elegir las preferencias. Lo primero que tenía que hacer era crear el adaptador para el RecyclerView de estadisticas y que se mostraran los resultados de la tabla estadisticas,  para ver resultados tuve que meter estadisticas de prueba ya que si no aparecía un RecyclerView en blanco. 
+La siguiente ventana o actividad sería donde se jugaría la partida, empecé poniendo los botones para que el jugador pudiese elegir la caracteristica, tambien se me ocurrio mostrar las cartas en un RecyclerView, eran 6 en total, pero claro sentía que el espacio no era el adecuado así que decidí hacer mi aplicación LANDSCAPE, en decir en horizontal, lo cual ve llevo cambiar un el diseño, además quería que el juego se viese a pantalla completa, por lo que tuve que ayudarme de internet para hacerlo, así aprovechaba mejor el espeacio y mostraba las cartas con más claridad. Tambien tenía pensaba implementar imagenes pero aún tenía cosas por hacer y no iba a pararme ahí.
+
+![Interfaz](Interfaz.png)
+
+### 8. MONTANDO EL JUEGO
+
+Despues de implementar el código para las llamadas al login y register de API, de haber implementado los modelos necesarios para realizar esta llamada, recoger la información y haber creado algunos adaptadores era la hora de hacer funcionar el juego en el cliente, cosa que me parecía que no sería del todo complicada, ya que tenía el API completada. Al principio no tenái muy claro como lo iba a hacer ya que tenía varias dudas, al final la partida se juega en el servidor, así que las decisiones las operaciones las hace este en una clase llamada JuegoOperations, especé a escribir codigo con el fin de que me funcionase el juego pero me ha costado más de lo que esperaba, ya que presenta varios errores, como que siempre es el server el que elige la caracteristica o he llegado a ver que en un telefono mi RecyclerView no funciona como debe, no retira la cartas, además de que solo se puede jugar una partida, cuando se juega esta partida y marcador no actua como espero, por lo que habría que reiniciar el servidor, creo que se por donde van los tiros, pero me ha faltado tiempo para solucionarlo, por lo que el funcionamiento del juego no es el correcto.
+
+### 9. PREFERENCIAS
+
+La aplicación debía tener preferencias de usuario, así que me puse con ello, añadi un botón de preferencias al menú ya que no venía sentido poner una toolbar en modo pantalla completa y horizontal. Realmente no tenía suficientes datos para rellenar las preferencias así que poner el momento implementé la interfaz con datos ficticios, aunque no tanto, ya que despues serían funciones que tendría la aplicación. Como por ejemplo los datos de conexión, es decir el usuario y la contraseña. Unas preferencias de notificaciones, pensé que los juegos suelen tener muchas notificaciones, como la notificación de cuando recuperas una vida en el Candy Crush, tambíen puse la opción de habilitar el bot automatico que juega por ti, a paser de no estar implementando en el proyecto final lo puse ya que era una tarea a realizar, tambien puse la opción de quitar o poner el sonido, esto de manera ficticia, ya que mi juego no dispone de sonido, pero es una idea que podría haber ocurrido y por ultimo metí la selección del nivel de dificultad, donde se podría elegir que tal listo fuese el adversario, algo que tampoco está implementado.
+
+### 10. ADMINISTRACIÓN
+
+El cliente tambien debía contar con modo desarrollador, donde este pudiese realizar operaciones CRUD. Lo primero que pensé es que podría haber una manera de implementar esto sin tener que hacer otro activity que lleve a estas opciones, así que busqué algo por el estilo pero no encontré nada relacionado, lo que me llevo a hacer otra actividad con estas opciones CRUD, la cual se habilita al poner en el Login admin admin, lo más tipico.
+
+![Admin](Admin.png)
+
+
+Esto nos llevaba a la actividad que se ve más arriba donde se puede gestionar las cartas, los jugadores y las partidas, eran botones que llevaban a otras actividades donde se podían ingresar los datos y hacer la operación pertinente, además de mostrarse los datos que habían en las tablas. 
+
+![Admin](AdminCrud.png)
+
+### 11. CONCLUSIÓN
+
+En este proyecto he podido ver todo lo que he aprendido, o almenos lo más importante  visto durante los dos años del ciclo, además de lo que me queda por perfeccionar o mejorar, y a paser de que la practica no esta complementate perfecta o terminada al 100% refleja mi nivel programación y manejo de datos, ha sido una buena practica y es posible que intente mejorarla una vez finalizada.
 
