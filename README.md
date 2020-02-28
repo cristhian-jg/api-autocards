@@ -1,16 +1,23 @@
 # MEMORIA: Autocartas API
 
-## [1. INTRODUCCIÓN.](#1-introducción-1)
-## [2. DISEÑANDO LA BASE DE DATOS.](#2-diseñando-la-base-de-datos-1)
-## [3. CONSTRUYENDO EL SERVIDOR](#3-construyendo-el-servidor-1)
-## [4. IMPLEMENTANDO LOS ENDPOINTS](#4-implementando-los-endpoints-1)
-## [5. PRUEBAS DE CONEXIÓN.](#5-pruebas-de-conexión-1)
-## [6. CREANDO EL JUEGO](#6-creando-el-juego-1)
-## [7. DISEÑANDO EL UI](#7-diseñando-el-ui-1)
-## [8. MONTANDO EL JUEGO](#8-montando-el-juego-1)
-## [9. PREFERENCIAS](#9-preferencias-1)
-## [10. ADMINISTRACIÓN](#10-administración-1)
-## [11. CONCLUSIÓN](#11-conclusión-1)
+
+Modulo: Acceso a Datos y Programación Multimedia
+Alumno: Cristhian González
+Fecha: 24/02/2020
+
+![Cartas](Cartas.jpg)
+
+### [1. INTRODUCCIÓN.](#1-introducción-1)
+### [2. DISEÑANDO LA BASE DE DATOS.](#2-diseñando-la-base-de-datos-1)
+### [3. CONSTRUYENDO EL SERVIDOR](#3-construyendo-el-servidor-1)
+### [4. IMPLEMENTANDO LOS ENDPOINTS](#4-implementando-los-endpoints-1)
+### [5. PRUEBAS DE CONEXIÓN.](#5-pruebas-de-conexión-1)
+### [6. CREANDO EL JUEGO](#6-creando-el-juego-1)
+### [7. DISEÑANDO EL UI](#7-diseñando-el-ui-1)
+### [8. MONTANDO EL JUEGO](#8-montando-el-juego-1)
+### [9. PREFERENCIAS](#9-preferencias-1)
+### [10. ADMINISTRACIÓN](#10-administración-1)
+### [11. CONCLUSIÓN](#11-conclusión-1)
 
 ### 1. INTRODUCCIÓN
 
