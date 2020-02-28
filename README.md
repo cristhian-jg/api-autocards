@@ -4,10 +4,10 @@
 ## [4. IMPLEMENTANDO LOS ENDPOINTS](#4-implementando-los-endpoints-1)
 ## [5. PRUEBAS DE CONEXIÓN.](#5-pruebas-de-conexión-1)
 ## [6. CREANDO EL JUEGO](#6-creando-el-juego-1)
-## [7. DISEÑANDO EL UI](#7-diseñando-el-iu-1)
+## [7. DISEÑANDO EL UI](#7-diseñando-el-ui-1)
 ## [8. MONTANDO EL JUEGO](#8-montando-el-juego-1)
 ## [9. PREFERENCIAS](#9-preferencias-1)
-## [10. ADMINISTRACIÓN](#10-administracion-1)
+## [10. ADMINISTRACIÓN](#10-administración-1)
 ## [11. CONCLUSIÓN](#11-conclusión-1)
 
 ### 1. INTRODUCCIÓN
@@ -197,7 +197,7 @@ Esto nos llevaba a la actividad que se ve más arriba donde se puede gestionar l
 
 ![Admin] (Admin2.png)
 
-### 10. CONCLUSIÓN
+### 11. CONCLUSIÓN
 
 En este proyecto he podido ver todo lo que he aprendido, o almenos lo más importante  visto durante los dos años del ciclo, además de lo que me queda por perfeccionar o mejorar, y a paser de que la practica no esta complementate perfecta o terminada al 100% refleja mi nivel programación y manejo de datos, ha sido una buena practica y es posible que intente mejorarla una vez finalizada.
 
