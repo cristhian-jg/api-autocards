@@ -22,7 +22,7 @@ autocartas, que esta formadas por 4 tablas cartas, jugadores, partidas, estadist
 cual la tablas estadisticas y jugadores tienen relacion con las tablas jugadores y
 partidas, dejo un mockup.
 
-![Mockup] (Mochup.png)
+![Mockup](Mockup.PNG)
 
 ### 3. CONSTRUYENDO EL SERVIDOR
 
@@ -176,7 +176,7 @@ Una vez con  con la API Rest completada me puse a hacer los primeros diseños pa
 Ahora era el turno de hacer la ventana de Inicio del juego, se me ocurrió mostrar las estadisticas de cada jugador que había jugado una partida en una parte de la actividad y por otro lado varios botones, uno para iniciar la partida y otro para elegir las preferencias. Lo primero que tenía que hacer era crear el adaptador para el RecyclerView de estadisticas y que se mostraran los resultados de la tabla estadisticas,  para ver resultados tuve que meter estadisticas de prueba ya que si no aparecía un RecyclerView en blanco. 
 La siguiente ventana o actividad sería donde se jugaría la partida, empecé poniendo los botones para que el jugador pudiese elegir la caracteristica, tambien se me ocurrio mostrar las cartas en un RecyclerView, eran 6 en total, pero claro sentía que el espacio no era el adecuado así que decidí hacer mi aplicación LANDSCAPE, en decir en horizontal, lo cual ve llevo cambiar un el diseño, además quería que el juego se viese a pantalla completa, por lo que tuve que ayudarme de internet para hacerlo, así aprovechaba mejor el espeacio y mostraba las cartas con más claridad. Tambien tenía pensaba implementar imagenes pero aún tenía cosas por hacer y no iba a pararme ahí.
 
-![Interfaz] (Interfaz.png)
+![Interfaz](Interfaz.PNG)
 
 ### 8. MONTANDO EL JUEGO
 
@@ -190,12 +190,12 @@ La aplicación debía tener preferencias de usuario, así que me puse con ello, 
 
 El cliente tambien debía contar con modo desarrollador, donde este pudiese realizar operaciones CRUD. Lo primero que pensé es que podría haber una manera de implementar esto sin tener que hacer otro activity que lleve a estas opciones, así que busqué algo por el estilo pero no encontré nada relacionado, lo que me llevo a hacer otra actividad con estas opciones CRUD, la cual se habilita al poner en el Login admin admin, lo más tipico.
 
-![Admin] (Admin.png)
+![Admin](Admin.PNG)
 
 
 Esto nos llevaba a la actividad que se ve más arriba donde se puede gestionar las cartas, los jugadores y las partidas, eran botones que llevaban a otras actividades donde se podían ingresar los datos y hacer la operación pertinente, además de mostrarse los datos que habían en las tablas. 
 
-![Admin] (Admin2.png)
+![Admin](AdminCrud.PNG)
 
 ### 11. CONCLUSIÓN
 
