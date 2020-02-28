@@ -1,14 +1,14 @@
-## 1. INTRODUCCIÓN.
-## 2. DISEÑANDO LA BASE DE DATOS.
-## 2. CONSTRUYENDO EL SERVIDOR
-## 4. IMPLEMENTANDO LOS ENDPOINTS
-## 5. PRUEBAS DE CONEXIÓN.
-## 6. CREANDO EL JUEGO
-## 7. DISEÑANDO EL UI
-## 8. MONTANDO EL JUEGO
-## 9. PREFERENCIAS
-## 10. ADMINISTRACIÓN
-## 11. CONCLUSIÓN
+## [1. INTRODUCCIÓN.](#1-introducción-1)
+## [2. DISEÑANDO LA BASE DE DATOS.](#2-diseñando-la-base-de-datos-1)
+## [3. CONSTRUYENDO EL SERVIDOR](#3-construyendo-el-servidor-1)
+## [4. IMPLEMENTANDO LOS ENDPOINTS](#4-implementando-los-endpoints-1)
+## [5. PRUEBAS DE CONEXIÓN.](#5-pruebas-de-conexión-1)
+## [6. CREANDO EL JUEGO](#6-creando-el-juego-1)
+## [7. DISEÑANDO EL UI](#7-diseñando-el-iu-1)
+## [8. MONTANDO EL JUEGO](#8-montando-el-juego-1)
+## [9. PREFERENCIAS](#9-preferencias-1)
+## [10. ADMINISTRACIÓN](#10-administracion-1)
+## [11. CONCLUSIÓN](#11-conclusión-1)
 
 ### 1. INTRODUCCIÓN
 
@@ -54,7 +54,7 @@ Una vez creada esta clase ya me puse con los controladores los cuales realizaban
 
 Con los metódos ya implementados hice unas pequeñas pruebas para verificar que estaban funcionando y así fue, por lo que ya tenía el CRUD de la aplicación hecho, por lo que me tocaba pasar al siguiente paso, crear los endpoints del servidor web, era algo que aún no tenía muy claro del todo así que simplemente me dedique a montar el esqueleto de los endpoints titulando los metodos, viendo cuales serían los metodos GET SET PUT DELETE, algo que no entendía del todo pero una vez estudiado no me costó tanto. Una vez tuve el esqueleto de los endpoints, completamente vacios, me quede un poco estancado porque no tenía claro el siguiente paso. Así que me puse a investigar nuevamente, que era exactamente un endpoint, su estructura y que debía contener, lo que nos lleva al siguiente apartado.
 
-### 4. IMPLEMENTADO LOS ENDPOINTS
+### 4. IMPLEMENTANDO LOS ENDPOINTS
 
 Una vez hecha mi investigación ya tenía mucho más claro como abarcar los endpoints, en este punto del proyecto empezaba a verlo todo más claro, y apartir de aquí mis días de proyecto empezaron a hacer un poco más productivos. 
 
