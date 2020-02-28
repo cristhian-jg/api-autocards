@@ -1,9 +1,12 @@
 # MEMORIA: Autocartas API
 
 
-Modulo: Acceso a Datos y Programación Multimedia
-Alumno: Cristhian González
-Fecha: 24/02/2020
+Modulo: Acceso a Datos y Programación Multimedia  
+
+Alumno: Cristhian González  
+
+Fecha: 24/02/2020  
+
 
 ![Cartas](Cartas.jpg)
 
